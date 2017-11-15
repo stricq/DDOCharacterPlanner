@@ -25,16 +25,16 @@ namespace DdoCharacterPlanner.Repository.Services {
         settings = await Task.Run(() => JsonConvert.DeserializeObject<DomainSettings>(File.ReadAllText(Filename)));
 
         if (settings.WindowW.EqualInPercentRange(0)) {
-          settings.WindowW = 800;
-          settings.WindowH = 600;
+          settings.WindowW = 1024;
+          settings.WindowH = 768;
 
           settings.WindowX = 100;
           settings.WindowY = 100;
         }
       }
       else settings = new DomainSettings {
-        WindowW = 800,
-        WindowH = 600,
+        WindowW = 1024,
+        WindowH = 768,
 
         WindowX = 100,
         WindowY = 100

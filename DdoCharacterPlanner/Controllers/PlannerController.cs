@@ -10,12 +10,14 @@ using AutoMapper;
 
 using DdoCharacterPlanner.Domain.Contracts;
 using DdoCharacterPlanner.Domain.Models;
+
 using DdoCharacterPlanner.Messages.Application;
 using DdoCharacterPlanner.Messages.Status;
 using DdoCharacterPlanner.ViewEntities;
 using DdoCharacterPlanner.ViewModels;
 
 using STR.Common.Messages;
+
 using STR.MvvmCommon;
 using STR.MvvmCommon.Contracts;
 
@@ -33,7 +35,8 @@ namespace DdoCharacterPlanner.Controllers {
 
     private DomainSettings settings;
 
-    private readonly PlannerViewModel viewModel;
+    private readonly  PlannerViewModel     viewModel;
+    private readonly MainMenuViewModel menuViewModel;
 
     private readonly IMessenger messenger;
     private readonly IMapper    mapper;
@@ -45,7 +48,7 @@ namespace DdoCharacterPlanner.Controllers {
     #region Constructor
 
     [ImportingConstructor]
-    public PlannerController(PlannerViewModel ViewModel, IMessenger Messenger, IMapper Mapper, ISettingsRepository SettingsRepository) {
+    public PlannerController(PlannerViewModel ViewModel, MainMenuViewModel MenuViewModel, IMessenger Messenger, IMapper Mapper, ISettingsRepository SettingsRepository) {
       if (Application.Current != null) Application.Current.DispatcherUnhandledException += onCurrentDispatcherUnhandledException;
 
       AppDomain.CurrentDomain.UnhandledException += onDomainUnhandledException;
@@ -56,7 +59,8 @@ namespace DdoCharacterPlanner.Controllers {
 
       System.Windows.Forms.Application.ThreadException += onThreadException;
 
-      viewModel = ViewModel;
+          viewModel =     ViewModel;
+      menuViewModel = MenuViewModel;
 
       messenger = Messenger;
       mapper    = Mapper;
@@ -107,6 +111,8 @@ namespace DdoCharacterPlanner.Controllers {
       viewModel.Loaded = new RelayCommandAsync<RoutedEventArgs>(onLoadedExecuteAsync);
 
       viewModel.Closing = new RelayCommand<CancelEventArgs>(onClosingExecute);
+
+      menuViewModel.Exit = new RelayCommand(onExitExecute);
     }
 
     private async Task onLoadedExecuteAsync(RoutedEventArgs args) {
@@ -127,6 +133,14 @@ namespace DdoCharacterPlanner.Controllers {
 
         Task.Run(() => settingsRepository.SaveSettingsAsync(settings)).Wait();
       }
+    }
+
+    private void onExitExecute() {
+      ApplicationClosingMessage message = new ApplicationClosingMessage();
+
+      messenger.Send(message);
+
+      if (!message.Cancel) Application.Current.Shutdown();
     }
 
     #endregion Commands

@@ -43,6 +43,12 @@
     <Reference Include="STR.Common, Version=1.0.6524.29887, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\STR.Common.1.0.17315.1\lib\net45\STR.Common.dll</HintPath>
     </Reference>
+    <Reference Include="STR.DialogView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\STR.DialogView.1.0.17046.1\lib\net45\STR.DialogView.dll</HintPath>
+    </Reference>
+    <Reference Include="STR.DialogView.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\STR.DialogView.1.0.17046.1\lib\net45\STR.DialogView.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="STR.MvvmCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\STR.MvvmCommon.Mef.1.0.17203.1\lib\net45\STR.MvvmCommon.dll</HintPath>
     </Reference>
@@ -76,6 +82,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\HeaderedContentStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PlannerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -89,7 +107,11 @@
     <Compile Include="Messages\Application\AppLoadedMessage.cs" />
     <Compile Include="Messages\Status\StatusTickMessage.cs" />
     <Compile Include="ViewEntities\SettingsViewEntity.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\PlannerViewModel.cs" />
+    <Compile Include="Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlannerView.xaml.cs">
       <DependentUpon>PlannerView.xaml</DependentUpon>
       <SubType>Code</SubType>

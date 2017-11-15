@@ -7,6 +7,10 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources/ColorsAndGradients.xaml" />
+
+        <ResourceDictionary Source="Resources/Converters.xaml" />
+
+        <ResourceDictionary Source="Resources/HeaderedContentStyle.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
