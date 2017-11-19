@@ -27,6 +27,8 @@
 
       <v:MainMenuView Grid.Row="0" />
 
+      <v:StatusBarView Grid.Row="2" />
+
     </Grid>
 
     <dv:DialogView Foreground="{StaticResource ForegroundColor}" />

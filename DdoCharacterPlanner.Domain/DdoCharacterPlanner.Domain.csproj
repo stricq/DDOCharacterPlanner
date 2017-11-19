@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.2.0\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="STR.Common, Version=1.0.6532.1092, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\STR.Common.1.0.17323.1\lib\net45\STR.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,8 +49,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAutoMapperConfiguration.cs" />
+    <Compile Include="Contracts\IPastLifeEnumeration.cs" />
     <Compile Include="Contracts\ISettingsRepository.cs" />
-    <Compile Include="Models\DomainSettings.cs" />
+    <Compile Include="Enumerations\Alignment.cs" />
+    <Compile Include="Enumerations\ClassName.cs" />
+    <Compile Include="Enumerations\DestinyName.cs" />
+    <Compile Include="Enumerations\DestinySphere.cs" />
+    <Compile Include="Enumerations\Gender.cs" />
+    <Compile Include="Enumerations\PastLifeType.cs" />
+    <Compile Include="Enumerations\RaceName.cs" />
+    <Compile Include="Extensions\ClassExtensions.cs" />
+    <Compile Include="Extensions\RaceExtensions.cs" />
+    <Compile Include="Models\PlayerCharacter\Character.cs" />
+    <Compile Include="Models\PlayerCharacter\Class.cs" />
+    <Compile Include="Models\PlayerCharacter\Level.cs" />
+    <Compile Include="Models\PlayerCharacter\PastLife.cs" />
+    <Compile Include="Models\PlayerCharacter\Race.cs" />
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

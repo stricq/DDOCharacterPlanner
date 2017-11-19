@@ -33,7 +33,7 @@ namespace DdoCharacterPlanner.Controllers {
 
     private DateTime lastSave = DateTime.Now;
 
-    private DomainSettings settings;
+    private Settings settings;
 
     private readonly  PlannerViewModel     viewModel;
     private readonly MainMenuViewModel menuViewModel;

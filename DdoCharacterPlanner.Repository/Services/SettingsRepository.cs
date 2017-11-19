@@ -18,11 +18,11 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     #region ISettingsRepository Implementation
 
-    public async Task<DomainSettings> LoadSettingsAsync() {
-      DomainSettings settings;
+    public async Task<Settings> LoadSettingsAsync() {
+      Settings settings;
 
       if (await Task.Run(() => File.Exists(Filename))) {
-        settings = await Task.Run(() => JsonConvert.DeserializeObject<DomainSettings>(File.ReadAllText(Filename)));
+        settings = await Task.Run(() => JsonConvert.DeserializeObject<Settings>(File.ReadAllText(Filename)));
 
         if (settings.WindowW.EqualInPercentRange(0)) {
           settings.WindowW = 1024;
@@ -32,7 +32,7 @@ namespace DdoCharacterPlanner.Repository.Services {
           settings.WindowY = 100;
         }
       }
-      else settings = new DomainSettings {
+      else settings = new Settings {
         WindowW = 1024,
         WindowH = 768,
 
@@ -43,7 +43,7 @@ namespace DdoCharacterPlanner.Repository.Services {
       return settings;
     }
 
-    public async Task SaveSettingsAsync(DomainSettings Settings) {
+    public async Task SaveSettingsAsync(Settings Settings) {
       string json = await Task.Run(() => JsonConvert.SerializeObject(Settings, Formatting.Indented));
 
       if (!await Task.Run(() => File.Exists(Filename))) await Task.Run(() => Directory.CreateDirectory(Path.GetDirectoryName(Filename)));

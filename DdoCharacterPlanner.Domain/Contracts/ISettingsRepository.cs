@@ -7,9 +7,9 @@ namespace DdoCharacterPlanner.Domain.Contracts {
 
   public interface ISettingsRepository {
 
-    Task<DomainSettings> LoadSettingsAsync();
+    Task<Settings> LoadSettingsAsync();
 
-    Task SaveSettingsAsync(DomainSettings Settings);
+    Task SaveSettingsAsync(Settings Settings);
 
   }
 

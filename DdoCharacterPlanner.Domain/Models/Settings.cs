@@ -2,7 +2,7 @@
 
 namespace DdoCharacterPlanner.Domain.Models {
 
-  public class DomainSettings {
+  public class Settings {
 
     public bool Maximized { get; set; }
 

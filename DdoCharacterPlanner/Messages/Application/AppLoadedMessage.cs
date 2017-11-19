@@ -7,7 +7,7 @@ namespace DdoCharacterPlanner.Messages.Application {
 
   public class AppLoadedMessage : ApplicationLoadedMessage {
 
-    public DomainSettings Settings { get; set; }
+    public Settings Settings { get; set; }
 
   }
 
