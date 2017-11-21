@@ -38,7 +38,7 @@ namespace DdoCharacterPlanner.Domain.Enumerations {
 
     #region Domain Properties
 
-    public virtual DestinySphere Sphere { get; } = DestinySphere.None;
+    public virtual DestinySphere Sphere { get; } = DestinySphere.Martial;
 
     #endregion Domain Properties
 

@@ -17,6 +17,12 @@ namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
 
     #endregion Properties
 
+    #region Domain Properties
+
+    public bool IsIconic => Name.IsIconic;
+
+    #endregion Domain Properties
+
   }
 
 }

@@ -29,7 +29,7 @@ namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
 
     public List<Level> Levels { get; set; }
 
-    public bool Has32Points { get; set; }
+    public bool Has1750Favor { get; set; }
 
     #endregion Properties
 

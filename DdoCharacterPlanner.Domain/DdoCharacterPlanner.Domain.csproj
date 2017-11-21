@@ -49,8 +49,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAutoMapperConfiguration.cs" />
+    <Compile Include="Contracts\ICommonDataStore.cs" />
+    <Compile Include="Contracts\IDataFileLoader.cs" />
+    <Compile Include="Contracts\IDataFileStore.cs" />
     <Compile Include="Contracts\IPastLifeEnumeration.cs" />
     <Compile Include="Contracts\ISettingsRepository.cs" />
+    <Compile Include="Enumerations\Ability.cs" />
     <Compile Include="Enumerations\Alignment.cs" />
     <Compile Include="Enumerations\ClassName.cs" />
     <Compile Include="Enumerations\DestinyName.cs" />

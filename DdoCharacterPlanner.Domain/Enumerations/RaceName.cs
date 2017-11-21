@@ -5,7 +5,7 @@ using STR.Common.Contracts;
 
 namespace DdoCharacterPlanner.Domain.Enumerations {
 
-  public class RaceName : Enumeration, IPastLifeEnumeration{
+  public class RaceName : Enumeration, IPastLifeEnumeration {
 
     #region Constructor
 
@@ -34,11 +34,11 @@ namespace DdoCharacterPlanner.Domain.Enumerations {
     public static readonly RaceName Warforged  = new RaceName(10, "Warforged");
 
     public static readonly RaceName Bladeforged        = new IconicRaceName(11, "Bladeforged");
-    public static readonly RaceName MorningLord        = new IconicRaceName(12, "Morning Lord");
+    public static readonly RaceName MorningLord        = new IconicRaceName(12, "Morninglord");
     public static readonly RaceName PurpleDragonKnight = new IconicRaceName(13, "Purple Dragon Knight");
     public static readonly RaceName ShadarKai          = new IconicRaceName(14, "Shadar-Kai");
     public static readonly RaceName DeepGnome          = new IconicRaceName(15, "Deep Gnome");
-    public static readonly RaceName AasimarScourge     = new IconicRaceName(16, "Aasimar Scourge");
+    public static readonly RaceName AasimarScourge     = new IconicRaceName(16, "Scourge");
 
     #endregion Properties
 
