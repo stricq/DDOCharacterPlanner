@@ -2,7 +2,7 @@
 using System.Linq;
 
 using DdoCharacterPlanner.Domain.Enumerations;
-using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 
 namespace DdoCharacterPlanner.Domain.Extensions {

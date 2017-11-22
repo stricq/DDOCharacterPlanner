@@ -1,4 +1,5 @@
-﻿
+﻿using DdoCharacterPlanner.Domain.Models.CommonData;
+
 
 namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
 
@@ -7,6 +8,8 @@ namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
     #region Properties
 
     public int CharacterLevel { get; set; }
+
+    public int ClassLevel { get; set; }
 
     public Class Class { get; set; }
 

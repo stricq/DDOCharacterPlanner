@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 using DdoCharacterPlanner.Domain.Contracts;
 using DdoCharacterPlanner.Domain.Enumerations;
-using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
 
@@ -57,6 +56,11 @@ namespace DdoCharacterPlanner.Repository.Loaders {
             break;
           }
           case "ADVANCEMENT": {
+            break;
+          }
+          default: {
+            Console.WriteLine($"Encountered unexpected property '{property}' while reading {Filename}");
+
             break;
           }
         }

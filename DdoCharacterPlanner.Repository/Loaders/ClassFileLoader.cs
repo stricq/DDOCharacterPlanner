@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using DdoCharacterPlanner.Domain.Contracts;
 using DdoCharacterPlanner.Domain.Enumerations;
-using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
 
@@ -37,7 +37,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
       StreamReader stream = new StreamReader(file);
 
       List<Class> classes = await ReadDataFileAsync<Class>(stream, (@class, property, value) => {
-        switch (property) {
+        switch(property) {
           case "CLASSNAME": {
             @class.Name = Enumeration.FromDisplayName<ClassName>(value);
 
@@ -94,6 +94,11 @@ namespace DdoCharacterPlanner.Repository.Loaders {
             break;
           }
           case "ADVANCEMENT": {
+            break;
+          }
+          default: {
+            Console.WriteLine($"Encountered unexpected property '{property}' while reading {Filename}");
+
             break;
           }
         }

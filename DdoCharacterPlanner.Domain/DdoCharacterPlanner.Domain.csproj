@@ -64,11 +64,15 @@
     <Compile Include="Enumerations\RaceName.cs" />
     <Compile Include="Extensions\ClassExtensions.cs" />
     <Compile Include="Extensions\RaceExtensions.cs" />
+    <Compile Include="Models\CommonData\Feat.cs" />
+    <Compile Include="Models\CommonData\FeatNeed.cs" />
+    <Compile Include="Models\CommonData\FeatRequirement.cs" />
+    <Compile Include="Models\CommonData\Skill.cs" />
     <Compile Include="Models\PlayerCharacter\Character.cs" />
-    <Compile Include="Models\PlayerCharacter\Class.cs" />
+    <Compile Include="Models\CommonData\Class.cs" />
     <Compile Include="Models\PlayerCharacter\Level.cs" />
     <Compile Include="Models\PlayerCharacter\PastLife.cs" />
-    <Compile Include="Models\PlayerCharacter\Race.cs" />
+    <Compile Include="Models\CommonData\Race.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Linq;
 
 using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Extensions;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 
 namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {

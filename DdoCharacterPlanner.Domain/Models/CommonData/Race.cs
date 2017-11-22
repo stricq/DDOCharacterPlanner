@@ -1,7 +1,7 @@
 ﻿using DdoCharacterPlanner.Domain.Enumerations;
 
 
-namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
+namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
   public class Race {
 

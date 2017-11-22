@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 
 namespace DdoCharacterPlanner.Domain.Contracts {
@@ -15,7 +15,7 @@ namespace DdoCharacterPlanner.Domain.Contracts {
 
     List<Class> Classes { get; }
 
-//  List<Feat> Feats { get; }
+    List<Feat> Feats { get; }
 
   }
 

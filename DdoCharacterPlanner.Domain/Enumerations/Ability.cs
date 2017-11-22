@@ -1,4 +1,6 @@
-﻿using STR.Common.Contracts;
+﻿using System.Linq;
+
+using STR.Common.Contracts;
 
 
 namespace DdoCharacterPlanner.Domain.Enumerations {
@@ -21,6 +23,14 @@ namespace DdoCharacterPlanner.Domain.Enumerations {
     public static readonly Ability Charisma     = new Ability(6, "Charisma");
 
     #endregion Properties
+
+    #region Domain Methods
+
+    public string ShortName => DisplayName.Substring(0, 3);
+
+    public static Ability FromShortName(string Name) => GetAll<Ability>().Single(a => a.ShortName == Name);
+
+    #endregion Domain Methods
 
   }
 

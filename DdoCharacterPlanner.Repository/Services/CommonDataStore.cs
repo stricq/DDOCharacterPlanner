@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using DdoCharacterPlanner.Domain.Contracts;
-using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
+using DdoCharacterPlanner.Domain.Models.CommonData;
 
 
 namespace DdoCharacterPlanner.Repository.Services {
@@ -43,19 +43,23 @@ namespace DdoCharacterPlanner.Repository.Services {
 
       ProgressHandler?.Invoke("Loading Skills...");
 
-//    skills = loadDatafile<Skill>();
+      Skills = await loadDatafileAsync<Skill>();
 
       ProgressHandler?.Invoke("Loading Feats...");
 
-//    Feats = loadDatafile<Feat>();
+      Feats = await loadDatafileAsync<Feat>();
 
       ProgressHandler?.Invoke("Loading Spells...");
 
-//    spells = loadDatafile<Spell>();
+//    Spells = await loadDatafileAsync<Spell>();
 
       ProgressHandler?.Invoke("Loading Enhancements...");
 
-//    enhancements = loadDatafile<Enhancement>();
+//    Enhancements = await loadDatafileAsync<Enhancement>();
+
+      ProgressHandler?.Invoke("Loading Destinies...");
+
+//    Destinies = await loadDatafileAsync<Destiny>();
 
       ProgressHandler?.Invoke("Ready");
     }
@@ -64,7 +68,9 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     public List<Class> Classes { get; private set; }
 
-//  public List<Feat> Feats { get; private set; }
+    public List<Skill> Skills { get; private set; }
+
+    public List<Feat> Feats { get; private set; }
 
     #endregion ICommonDataStore Implementation
 
@@ -78,7 +84,9 @@ namespace DdoCharacterPlanner.Repository.Services {
     #region Private Methods
 
     private async Task<List<T>> loadDatafileAsync<T>() {
-      string dataFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"STR Programming Services\DDO Character Planner");
+      string dataFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"STR Programming Services\DDO Character Planner\Data Files");
+
+      if (!await Task.Run(() => Directory.Exists(dataFilePath))) await Task.Run(() => Directory.CreateDirectory(dataFilePath));
 
       List<T> items = await loaders.Single(loader => loader.LoaderType == typeof(T)).LoadFromDataFileAsync<T>(dataFilePath, this);
 

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 
 using DdoCharacterPlanner.Domain.Enumerations;
+using DdoCharacterPlanner.Domain.Models.PlayerCharacter;
 
 
-namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
+namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
   public class Class {
 
@@ -46,12 +47,6 @@ namespace DdoCharacterPlanner.Domain.Models.PlayerCharacter {
     public DestinySphere StartingSphere { get; set; }
 
     #endregion Properties
-
-    #region Domain Properties
-
-    public int ClassLevel { get; set; }
-
-    #endregion Domain Properties
 
   }
 

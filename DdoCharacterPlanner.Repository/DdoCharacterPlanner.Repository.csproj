@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="Loaders\ClassFileLoader.cs" />
     <Compile Include="Loaders\DataFileLoaderBase.cs" />
+    <Compile Include="Loaders\FeatFileLoader.cs" />
     <Compile Include="Loaders\RaceFileLoader.cs" />
+    <Compile Include="Loaders\SkillFileLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CommonDataStore.cs" />
     <Compile Include="Services\SettingsRepository.cs" />
