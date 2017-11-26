@@ -15,13 +15,19 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     public Ability KeyAbility { get; set; }
 
-    public List<ClassName> PrimaryClasses { get; set; }
+    public List<ClassName> PrimaryClassNames { get; set; }
 
-    public List<ClassName> CrossClasses { get; set; }
+    public List<ClassName> CrossClassNames { get; set; }
 
     public string Icon { get; set; }
 
     #endregion Properties
+
+    #region Domain Properties
+
+    public string IconFilename => $"{Name}.bmp";
+
+    #endregion Domain Properties
 
   }
 

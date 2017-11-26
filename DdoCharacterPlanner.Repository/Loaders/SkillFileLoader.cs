@@ -10,6 +10,7 @@ using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
+using STR.Common.Extensions;
 
 
 namespace DdoCharacterPlanner.Repository.Loaders {
@@ -23,13 +24,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/SkillFile.txt";
 
+    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Skills";
+
     #endregion Private Fields
 
     #region IDataFileLoader Members
 
     public Type LoaderType => typeof(Skill);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);
@@ -59,12 +62,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
             break;
           }
           case "PRIMARY": {
-            skill.PrimaryClasses = ToStringList(value).Select(Enumeration.FromDisplayName<ClassName>).ToList();
+            skill.PrimaryClassNames = ToStringList(value).Select(Enumeration.FromDisplayName<ClassName>).ToList();
 
             break;
           }
           case "CROSS": {
-            skill.CrossClasses = ToStringList(value).Select(Enumeration.FromDisplayName<ClassName>).ToList();
+            skill.CrossClassNames = ToStringList(value).Select(Enumeration.FromDisplayName<ClassName>).ToList();
 
             break;
           }
@@ -76,25 +79,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
-      skills = skills.Where(s => s.Name != null).ToList();
+      await skills.ForEachAsync(skill => {
+        string path = Path.Combine(ImagePath, "Skills", skill.IconFilename);
 
-      DataFileStore.StoreToDatabase<Skill>(dbSkills => {
-        List<Skill> newSkills = new List<Skill>();
+        string url = $"{ImageUrl}/{skill.Icon}.bmp";
 
-        foreach(Skill skill in skills) {
-          Skill dbSkill = dbSkills.FirstOrDefault(r => r.Name == skill.Name);
-
-          if (dbSkill != null) {
-            dbSkill.Description    = skill.Description;
-            dbSkill.Icon           = skill.Icon;
-            dbSkill.KeyAbility     = skill.KeyAbility;
-            dbSkill.PrimaryClasses = skill.PrimaryClasses;
-            dbSkill.CrossClasses   = skill.CrossClasses;
-          }
-          else newSkills.Add(skill);
-        }
-
-        return newSkills;
+        return VerifyAndDownloadAsync(path, url);
       });
 
       return skills.Cast<T>().ToList();

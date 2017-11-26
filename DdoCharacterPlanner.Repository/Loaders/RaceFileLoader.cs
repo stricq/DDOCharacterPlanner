@@ -10,6 +10,7 @@ using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
+using STR.Common.Extensions;
 
 
 namespace DdoCharacterPlanner.Repository.Loaders {
@@ -23,13 +24,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/RaceFile.txt";
 
+    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Races";
+
     #endregion Private Fields
 
     #region IDataFileLoader Implementation
 
     public Type LoaderType => typeof(Race);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);
@@ -66,22 +69,19 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
-      races = races.Where(r => r.Name != null).ToList();
+      await races.ForEachAsync(race => {
+        string   malePath = Path.Combine(ImagePath, "Races", race.MaleIconFilename);
+        string femalePath = Path.Combine(ImagePath, "Races", race.FemaleIconFilename);
 
-      DataFileStore.StoreToDatabase<Race>(dbRaces => {
-        List<Race> newRaces = new List<Race>();
+        string   maleUrl = $"{ImageUrl}/{race.Name.GetRemoteName("Male")}";
+        string femaleUrl = $"{ImageUrl}/{race.Name.GetRemoteName("Female")}";
 
-        foreach(Race race in races) {
-          Race dbRace = dbRaces.SingleOrDefault(r => r.Name == race.Name);
+        List<Task> tasks = new List<Task> {
+          VerifyAndDownloadAsync(  malePath,   maleUrl),
+          VerifyAndDownloadAsync(femalePath, femaleUrl),
+        };
 
-          if (dbRace != null) {
-            dbRace.Description       = race.Description;
-            dbRace.BaseAbilityPoints = race.BaseAbilityPoints;
-          }
-          else newRaces.Add(race);
-        }
-
-        return newRaces;
+        return Task.WhenAll(tasks);
       });
 
       return races.Cast<T>().ToList();

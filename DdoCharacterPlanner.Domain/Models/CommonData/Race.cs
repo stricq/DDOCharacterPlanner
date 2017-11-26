@@ -21,6 +21,10 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     public bool IsIconic => Name.IsIconic;
 
+    public string MaleIconFilename => $"{Name} Male.bmp";
+
+    public string FemaleIconFilename => $"{Name} Female.bmp";
+
     #endregion Domain Properties
 
   }

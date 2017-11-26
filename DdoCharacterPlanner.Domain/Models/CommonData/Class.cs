@@ -48,6 +48,12 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     #endregion Properties
 
+    #region Domain Properties
+
+    public string IconFilename => $"{Name}.bmp";
+
+    #endregion Domain Properties
+
   }
 
 }

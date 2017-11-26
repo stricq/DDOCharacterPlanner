@@ -10,6 +10,7 @@ using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
+using STR.Common.Extensions;
 
 
 namespace DdoCharacterPlanner.Repository.Loaders {
@@ -23,13 +24,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/FeatsFile.txt";
 
+    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Feats";
+
     #endregion Private Fields
 
     #region IDataFileLoader Members
 
     public Type LoaderType => typeof(Feat);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);
@@ -99,32 +102,19 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
-      feats = feats.Where(f => f.Name != null).ToList();
+      await feats.Where(feat => !String.IsNullOrEmpty(feat.Icon)).GroupBy(feat => feat.Icon).ForEachAsync(grp => {
+        string path = Path.Combine(ImagePath, "Feats", grp.First().IconFilename);
+
+        string url = $"{ImageUrl}/{grp.First().IconFilename}";
+
+        return VerifyAndDownloadAsync(path, url).ContinueWith(task => {
+          if (task.IsCompleted && !task.Result) grp.ForEach(feat => feat.Icon = "NoImage");
+        });
+      });
 
       feats.AddRange(feats.Where(f => !String.IsNullOrEmpty(f.ParentName))
                           .GroupBy(f => f.ParentName)
                           .Select(g => new Feat { Name = g.Key, IsParentHeader = true }));
-
-      DataFileStore.StoreToDatabase<Feat>(dbFeats => {
-        List<Feat> newFeats = new List<Feat>();
-
-        foreach(Feat feat in feats) {
-          Feat dbFeat = dbFeats.SingleOrDefault(f => f.ParentName == feat.ParentName
-                                                  && f.Name       == feat.Name);
-
-          if (dbFeat != null) {
-            dbFeat.Description = feat.Description;
-            dbFeat.Icon        = feat.Icon;
-            dbFeat.Locks       = feat.Locks;
-            dbFeat.NeedsAll    = feat.NeedsAll;
-            dbFeat.NeedsOne    = feat.NeedsOne;
-            dbFeat.Tags        = feat.Tags;
-          }
-          else newFeats.Add(feat);
-        }
-
-        return newFeats;
-      });
 
       return feats.Cast<T>().ToList();
     }
@@ -134,7 +124,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     #region Private Methods
 
     private static List<FeatNeed> buildNeedsList(string value) {
-      string[] needs = value.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+      List<string> needs = ToStringList(value);
 
       return needs.Select(need => {
         string[] parts = need.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);

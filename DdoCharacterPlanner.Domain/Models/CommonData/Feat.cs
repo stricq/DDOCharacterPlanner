@@ -32,6 +32,8 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     public bool IsParentHeader { get; set; }
 
+    public string IconFilename => $"{Icon}.bmp";
+
     #endregion Domain Properties
 
     #region Overrides
@@ -43,11 +45,11 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
         hashCode = (hashCode * 397) ^ (ParentName   != null ? ParentName.GetHashCode()  : 0);
         hashCode = (hashCode * 397) ^ (Description  != null ? Description.GetHashCode() : 0);
         hashCode = (hashCode * 397) ^ (Icon         != null ? Icon.GetHashCode()        : 0);
-        hashCode = (hashCode * 397) ^ (Locks        != null ? getHashCode(Locks)        : 0);
-        hashCode = (hashCode * 397) ^ (NeedsAll     != null ? getHashCode(NeedsAll)     : 0);
-        hashCode = (hashCode * 397) ^ (NeedsOne     != null ? getHashCode(NeedsOne)     : 0);
-        hashCode = (hashCode * 397) ^ (Tags         != null ? getHashCode(Tags)         : 0);
-        hashCode = (hashCode * 397) ^ (Requirements != null ? getHashCode(Requirements) : 0);
+        hashCode = (hashCode * 397) ^ (Locks        != null ? getListHashCode(Locks)        : 0);
+        hashCode = (hashCode * 397) ^ (NeedsAll     != null ? getListHashCode(NeedsAll)     : 0);
+        hashCode = (hashCode * 397) ^ (NeedsOne     != null ? getListHashCode(NeedsOne)     : 0);
+        hashCode = (hashCode * 397) ^ (Tags         != null ? getListHashCode(Tags)         : 0);
+        hashCode = (hashCode * 397) ^ (Requirements != null ? getListHashCode(Requirements) : 0);
 
         hashCode = (hashCode * 397) ^ IsParentHeader.GetHashCode();
 
@@ -55,7 +57,7 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
       }
     }
 
-    private static int getHashCode<T>(List<T> list) {
+    private static int getListHashCode<T>(List<T> list) {
       if (!list.Any()) return 0;
 
       unchecked {

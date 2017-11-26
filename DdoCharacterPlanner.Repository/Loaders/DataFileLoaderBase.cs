@@ -12,32 +12,59 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     #region Protected Methods
 
-    protected static async Task VerifyAndDownloadAsync(string filePath, string urlPath) {
-      if (!await Task.Run(() => File.Exists(filePath))) {
-        using(StreamWriter writer = new StreamWriter(filePath)) {
-          using(HttpClient client = new HttpClient()) {
-            Stream reader = await client.GetStreamAsync(new Uri(urlPath));
+    protected static async Task<bool> VerifyAndDownloadAsync(string filePath, string urlPath) {
+      string dirPath = Path.GetDirectoryName(filePath);
 
-            await reader.CopyToAsync(writer.BaseStream);
+      if (!await Task.Run(() => Directory.Exists(dirPath))) await Task.Run(() => Directory.CreateDirectory(dirPath));
+
+      if (!await Task.Run(() => File.Exists(filePath))) {
+        using(HttpClient client = new HttpClient()) {
+          HttpResponseMessage response = await client.GetAsync(new Uri(urlPath));
+
+          if (!response.IsSuccessStatusCode) {
+            Console.WriteLine($"{urlPath} returned code {response.StatusCode}.");
+
+            return false;
+          }
+
+          using(StreamWriter writer = new StreamWriter(filePath)) {
+            await response.Content.CopyToAsync(writer.BaseStream);
           }
         }
       }
+
+      return true;
     }
 
-    protected static async Task<List<T>> ReadDataFileAsync<T>(StreamReader stream, Action<T, string, string> parser) where T : new() {
-      T item = new T();
+    protected static async Task<List<T>> ReadDataFileAsync<T>(StreamReader stream, Action<T, string, string> parser, bool skip = false) where T : new() {
+      T item = default;
 
       List<T> list = new List<T>();
 
       string line = await stream.ReadLineAsync();
 
       while(line != null) {
-        if (line.Trim().Length == 0) {
-          list.Add(item);
+        if (line.StartsWith("[")) {
+          string header = line.Remove(line.IndexOf("]", StringComparison.InvariantCulture)).Replace("[", null);
 
-          item = new T();
+          parser(default, header, null);
+
+          skip = false;
+
+          continue;
         }
-        else if (!line.StartsWith("//") && !line.StartsWith("[")) {
+
+        if (skip || line.StartsWith("//")) {
+          //
+          // Do nothing, just consume lines...
+          //
+        }
+        else if (line.Trim().Length == 0) {
+          if (item != null) list.Add(item);
+
+          item = default;
+        }
+        else {
           string property = line.Substring(0, line.IndexOf(':')).TrimStart();
 
           string value = line.Substring(line.IndexOf(':') + 2).TrimEnd();
@@ -46,13 +73,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
           value = value.TrimEnd(';');
 
+          if (item == null) item = new T();
+
           parser(item, property, value);
         }
 
         line = await stream.ReadLineAsync();
       }
 
-      list.Add(item);
+      if (item != null) list.Add(item);
 
       return list;
     }

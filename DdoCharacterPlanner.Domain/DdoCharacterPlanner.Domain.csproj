@@ -64,10 +64,12 @@
     <Compile Include="Enumerations\RaceName.cs" />
     <Compile Include="Extensions\ClassExtensions.cs" />
     <Compile Include="Extensions\RaceExtensions.cs" />
+    <Compile Include="Models\CommonData\SpellCasterLevel.cs" />
     <Compile Include="Models\CommonData\Feat.cs" />
     <Compile Include="Models\CommonData\FeatNeed.cs" />
     <Compile Include="Models\CommonData\FeatRequirement.cs" />
     <Compile Include="Models\CommonData\Skill.cs" />
+    <Compile Include="Models\CommonData\Spell.cs" />
     <Compile Include="Models\PlayerCharacter\Character.cs" />
     <Compile Include="Models\CommonData\Class.cs" />
     <Compile Include="Models\PlayerCharacter\Level.cs" />

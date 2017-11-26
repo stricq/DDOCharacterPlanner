@@ -81,8 +81,6 @@ namespace DdoCharacterPlanner.Controllers {
 
       viewModel.Settings = mapper.Map<SettingsViewEntity>(settings);
 
-      await commonDataStore.LoadDataFilesAsync(null);
-
       registerMessages();
       registerCommands();
     }
@@ -123,6 +121,8 @@ namespace DdoCharacterPlanner.Controllers {
 
     private async Task onLoadedExecuteAsync(RoutedEventArgs args) {
       isStartupComplete = true;
+
+      await commonDataStore.LoadDataFilesAsync(null);
 
       await messenger.SendAsync(new AppLoadedMessage { Settings = settings });
     }

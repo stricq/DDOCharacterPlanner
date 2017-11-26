@@ -10,6 +10,7 @@ using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Contracts;
+using STR.Common.Extensions;
 
 
 namespace DdoCharacterPlanner.Repository.Loaders {
@@ -23,13 +24,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/ClassFile.txt";
 
+    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Classes";
+
     #endregion Private Fields
 
     #region IDataFileLoader Members
 
     public Type LoaderType => typeof(Class);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);
@@ -104,29 +107,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
-      classes = classes.Where(c => c.Name != null).ToList();
+      await classes.ForEachAsync(@class => {
+        string path = Path.Combine(ImagePath, "Classes", $"{@class.IconFilename}");
 
-      DataFileStore.StoreToDatabase<Class>(dbClasses => {
-        List<Class> newClasses = new List<Class>();
+        string url = $"{ImageUrl}/{@class.IconFilename}";
 
-        foreach(Class @class in classes) {
-          Class dbClass = dbClasses.SingleOrDefault(r => r.Name == @class.Name);
-
-          if (dbClass != null) {
-            dbClass.Description     = @class.Description;
-            dbClass.HitDie          = @class.HitDie;
-            dbClass.SkillPoints     = @class.SkillPoints;
-            dbClass.BaseAttackBonus = @class.BaseAttackBonus;
-            dbClass.FortitudeSave   = @class.FortitudeSave;
-            dbClass.ReflexSave      = @class.ReflexSave;
-            dbClass.WillSave        = @class.WillSave;
-            dbClass.SpellPoints     = @class.SpellPoints;
-            dbClass.Alignments      = @class.Alignments;
-          }
-          else newClasses.Add(@class);
-        }
-
-        return newClasses;
+        return VerifyAndDownloadAsync(path, url);
       });
 
       return classes.Cast<T>().ToList();
