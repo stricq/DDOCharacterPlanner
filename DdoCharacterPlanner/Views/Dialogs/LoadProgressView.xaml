@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="DdoCharacterPlanner.Views.Dialogs.LoadProgressView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mvvm="http://schemas.stricq.com/mvvmcommon/"
+             mvvm:ViewModelLocator.ComposedViewModel="LoadProgressViewModel"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
+
+  <HeaderedContentControl Header="Retrieving / Loading Data Files" Margin="6" Style="{StaticResource TallHeaderedContentStyle}">
+    <ItemsControl ItemsSource="{Binding Path=Loaders}" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" SharedSizeGroup="Status" />
+              <ColumnDefinition Width="Auto" SharedSizeGroup="Loader" />
+            </Grid.ColumnDefinitions>
+
+            <fa:ImageAwesome Icon="{Binding Path=StatusIcon}" Spin="{Binding Path=StatusSpin}" Width="16" Foreground="{Binding Path=StatusColor}" />
+            <Label Grid.Column="1" Content="{Binding Path=Loader}" HorizontalAlignment="Left"  Foreground="{StaticResource ForegroundColor}" />
+
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </HeaderedContentControl>
+
+</UserControl>

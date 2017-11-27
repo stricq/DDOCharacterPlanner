@@ -32,7 +32,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     public Type LoaderType => typeof(Skill);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);

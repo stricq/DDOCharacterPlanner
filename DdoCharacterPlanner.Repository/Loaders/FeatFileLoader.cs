@@ -32,7 +32,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     public Type LoaderType => typeof(Feat);
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
       string file = Path.Combine(FilePath, Filename);
 
       await VerifyAndDownloadAsync(file, FileUrl);
@@ -123,13 +123,13 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     #region Private Methods
 
-    private static List<FeatNeed> buildNeedsList(string value) {
+    private static List<Need> buildNeedsList(string value) {
       List<string> needs = ToStringList(value);
 
       return needs.Select(need => {
         string[] parts = need.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
-        return new FeatNeed {
+        return new Need {
           Type = parts[0],
           Name = String.Join(" ", parts.Skip(1))
         };

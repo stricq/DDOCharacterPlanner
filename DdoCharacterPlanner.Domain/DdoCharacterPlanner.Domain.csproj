@@ -49,9 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAutoMapperConfiguration.cs" />
+    <Compile Include="Contracts\ICommonData.cs" />
     <Compile Include="Contracts\ICommonDataStore.cs" />
     <Compile Include="Contracts\IDataFileLoader.cs" />
-    <Compile Include="Contracts\IDataFileStore.cs" />
     <Compile Include="Contracts\IPastLifeEnumeration.cs" />
     <Compile Include="Contracts\ISettingsRepository.cs" />
     <Compile Include="Enumerations\Ability.cs" />
@@ -64,9 +64,12 @@
     <Compile Include="Enumerations\RaceName.cs" />
     <Compile Include="Extensions\ClassExtensions.cs" />
     <Compile Include="Extensions\RaceExtensions.cs" />
+    <Compile Include="Models\CommonData\Enhancement.cs" />
+    <Compile Include="Models\CommonData\Modify.cs" />
+    <Compile Include="Models\CommonData\SelectorRank.cs" />
     <Compile Include="Models\CommonData\SpellCasterLevel.cs" />
     <Compile Include="Models\CommonData\Feat.cs" />
-    <Compile Include="Models\CommonData\FeatNeed.cs" />
+    <Compile Include="Models\CommonData\Need.cs" />
     <Compile Include="Models\CommonData\FeatRequirement.cs" />
     <Compile Include="Models\CommonData\Skill.cs" />
     <Compile Include="Models\CommonData\Spell.cs" />

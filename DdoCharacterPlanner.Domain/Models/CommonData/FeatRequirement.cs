@@ -17,22 +17,6 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     #endregion Properties
 
-    #region Overrides
-
-    public override int GetHashCode() {
-      unchecked {
-        int hashCode = RaceName != null ? RaceName.GetHashCode() : 0;
-
-        hashCode = (hashCode * 397) ^ (ClassName != null ? ClassName.GetHashCode() : 0);
-        hashCode = (hashCode * 397) ^ (Acquire   != null ? Acquire.GetHashCode()   : 0);
-        hashCode = (hashCode * 397) ^ Level;
-
-        return hashCode;
-      }
-    }
-
-    #endregion Overrides
-
   }
 
 }

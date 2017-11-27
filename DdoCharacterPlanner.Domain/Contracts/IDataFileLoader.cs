@@ -9,7 +9,7 @@ namespace DdoCharacterPlanner.Domain.Contracts {
 
     Type LoaderType { get; }
 
-    Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, IDataFileStore DataFileStore);
+    Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath);
 
   }
 

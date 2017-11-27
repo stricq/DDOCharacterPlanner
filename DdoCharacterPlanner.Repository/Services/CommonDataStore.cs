@@ -12,8 +12,8 @@ using DdoCharacterPlanner.Domain.Models.CommonData;
 namespace DdoCharacterPlanner.Repository.Services {
 
   [Export(typeof(ICommonDataStore))]
-  [Export(typeof(IDataFileStore))]
-  public class CommonDataStore : ICommonDataStore, IDataFileStore {
+  [Export(typeof(ICommonData))]
+  public class CommonDataStore : ICommonDataStore, ICommonData {
 
     #region Private Fields
 
@@ -36,8 +36,10 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     public async Task<bool> AreDataFilesPresent() {
       string  dataFilePath = Path.Combine(rootFilePath, "Data Files");
+      string imageFilePath = Path.Combine(rootFilePath, "Images");
 
-      return await Task.Run(() => Directory.Exists(dataFilePath));
+      return await Task.Run(() => Directory.Exists(dataFilePath))
+          && await Task.Run(() => Directory.Exists(imageFilePath));
     }
 
     public async Task LoadDataFilesAsync(Action<string> ProgressHandler) {
@@ -46,15 +48,17 @@ namespace DdoCharacterPlanner.Repository.Services {
         loadDataFileAsync<Class>().ContinueWith(task => { Classes = task.IsCompleted ? task.Result : new List<Class>(); ProgressHandler?.Invoke("Classes"); }),
         loadDataFileAsync<Skill>().ContinueWith(task => { Skills  = task.IsCompleted ? task.Result : new List<Skill>(); ProgressHandler?.Invoke("Skills");  }),
         loadDataFileAsync<Feat>() .ContinueWith(task => { Feats   = task.IsCompleted ? task.Result : new List<Feat>();  ProgressHandler?.Invoke("Feats");   }),
-        loadDataFileAsync<Spell>().ContinueWith(task => { Spells  = task.IsCompleted ? task.Result : new List<Spell>(); ProgressHandler?.Invoke("Spells");  })
+        loadDataFileAsync<Spell>().ContinueWith(task => { Spells  = task.IsCompleted ? task.Result : new List<Spell>(); ProgressHandler?.Invoke("Spells");  }),
+
+        loadDataFileAsync<Enhancement>().ContinueWith(task => { Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>(); ProgressHandler?.Invoke("Enhancements"); })
       };
-
-//    Enhancements = await loadDatafileAsync<Enhancement>();
-
-//    Destinies = await loadDatafileAsync<Destiny>();
 
       await Task.WhenAll(tasks);
     }
+
+    #endregion ICommonDataStore Implementation
+
+    #region ICommonData Implementation
 
     public List<Race> Races { get; private set; }
 
@@ -66,14 +70,9 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     public List<Spell> Spells { get; private set; }
 
-    #endregion ICommonDataStore Implementation
+    public List<Enhancement> Enhancements { get; private set; }
 
-    #region IDataFileStore Implementation
-
-    public void StoreToDatabase<T>(Func<List<T>, List<T>> Updater) {
-    }
-
-    #endregion IDataFileStore Implementation
+    #endregion ICommonData Implementation
 
     #region Private Methods
 
@@ -81,7 +80,7 @@ namespace DdoCharacterPlanner.Repository.Services {
       string  dataFilePath = Path.Combine(rootFilePath, "Data Files");
       string imageFilePath = Path.Combine(rootFilePath, "Images");
 
-      List<T> items = await loaders.Single(loader => loader.LoaderType == typeof(T)).LoadFromDataFileAsync<T>(dataFilePath, imageFilePath, this);
+      List<T> items = await loaders.Single(loader => loader.LoaderType == typeof(T)).LoadFromDataFileAsync<T>(dataFilePath, imageFilePath);
 
       return items;
     }

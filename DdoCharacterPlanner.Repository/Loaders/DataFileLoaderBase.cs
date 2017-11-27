@@ -51,6 +51,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
           skip = false;
 
+          line = await stream.ReadLineAsync();
+
           continue;
         }
 
@@ -99,7 +101,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     protected static List<string> ToStringList(string data) {
       if (data == "" || data.ToLower() == "tbd") return null;
 
-      return data.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(value => value.Trim()).ToList();
+      return data.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Where(value => !String.IsNullOrWhiteSpace(value)).Select(value => value.Trim()).ToList();
     }
 
     #endregion Protected Methods
