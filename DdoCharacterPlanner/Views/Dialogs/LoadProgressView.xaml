@@ -8,23 +8,27 @@
              mvvm:ViewModelLocator.ComposedViewModel="LoadProgressViewModel"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
 
-  <HeaderedContentControl Header="Retrieving / Loading Data Files" Margin="6" Style="{StaticResource TallHeaderedContentStyle}">
-    <ItemsControl ItemsSource="{Binding Path=Loaders}" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" SharedSizeGroup="Status" />
-              <ColumnDefinition Width="Auto" SharedSizeGroup="Loader" />
-            </Grid.ColumnDefinitions>
+  <Grid Margin="6">
 
-            <fa:ImageAwesome Icon="{Binding Path=StatusIcon}" Spin="{Binding Path=StatusSpin}" Width="16" Foreground="{Binding Path=StatusColor}" />
-            <Label Grid.Column="1" Content="{Binding Path=Loader}" HorizontalAlignment="Left"  Foreground="{StaticResource ForegroundColor}" />
+    <HeaderedContentControl Header="Retrieving / Loading Data Files" Style="{StaticResource TallHeaderedContentStyle}">
+      <ItemsControl ItemsSource="{Binding Path=Loaders}" Margin="6" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Status" />
+                <ColumnDefinition Width="Auto" SharedSizeGroup="Loader" />
+              </Grid.ColumnDefinitions>
 
-          </Grid>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
-  </HeaderedContentControl>
+              <fa:ImageAwesome Grid.Column="0" Icon="{Binding Path=StatusIcon}" Spin="{Binding Path=StatusSpin}" Width="16" Foreground="{Binding Path=StatusColor}" />
+              <Label Grid.Column="1" Content="{Binding Path=Loader}" HorizontalAlignment="Left" Foreground="{StaticResource ForegroundColor}" />
+
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </HeaderedContentControl>
+
+  </Grid>
 
 </UserControl>

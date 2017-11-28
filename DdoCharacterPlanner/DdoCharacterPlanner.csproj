@@ -35,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -82,7 +83,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants\DialogNames.cs" />
+    <Compile Include="Controllers\Dialogs\LoadProgressController.cs" />
     <Compile Include="Controllers\StatusBarController.cs" />
+    <Compile Include="Messages\Application\LoadProgressMessage.cs" />
+    <Compile Include="ViewEntities\Dialogs\LoadProgressViewEntity.cs" />
+    <Compile Include="ViewModels\Dialogs\LoadProgressViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="Views\Dialogs\LoadProgressView.xaml.cs">
       <DependentUpon>LoadProgressView.xaml</DependentUpon>

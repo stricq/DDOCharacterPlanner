@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -51,7 +52,6 @@
     <Compile Include="Contracts\IAutoMapperConfiguration.cs" />
     <Compile Include="Contracts\ICommonData.cs" />
     <Compile Include="Contracts\ICommonDataStore.cs" />
-    <Compile Include="Contracts\IDataFileLoader.cs" />
     <Compile Include="Contracts\IPastLifeEnumeration.cs" />
     <Compile Include="Contracts\ISettingsRepository.cs" />
     <Compile Include="Enumerations\Ability.cs" />

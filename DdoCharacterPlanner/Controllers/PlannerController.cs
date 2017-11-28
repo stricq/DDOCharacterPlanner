@@ -43,14 +43,12 @@ namespace DdoCharacterPlanner.Controllers {
 
     private readonly ISettingsRepository settingsRepository;
 
-    private readonly ICommonDataStore commonDataStore;
-
     #endregion Private Fields
 
     #region Constructor
 
     [ImportingConstructor]
-    public PlannerController(PlannerViewModel ViewModel, MainMenuViewModel MenuViewModel, IMessenger Messenger, IMapper Mapper, ISettingsRepository SettingsRepository, ICommonDataStore CommonDataStore) {
+    public PlannerController(PlannerViewModel ViewModel, MainMenuViewModel MenuViewModel, IMessenger Messenger, IMapper Mapper, ISettingsRepository SettingsRepository) {
       if (Application.Current != null) Application.Current.DispatcherUnhandledException += onCurrentDispatcherUnhandledException;
 
       AppDomain.CurrentDomain.UnhandledException += onDomainUnhandledException;
@@ -68,8 +66,6 @@ namespace DdoCharacterPlanner.Controllers {
       mapper    = Mapper;
 
       settingsRepository = SettingsRepository;
-
-      commonDataStore = CommonDataStore;
     }
 
     #endregion Constructor
@@ -122,7 +118,7 @@ namespace DdoCharacterPlanner.Controllers {
     private async Task onLoadedExecuteAsync(RoutedEventArgs args) {
       isStartupComplete = true;
 
-      await commonDataStore.LoadDataFilesAsync(null);
+      await messenger.SendAsync(new LoadProgressMessage());
 
       await messenger.SendAsync(new AppLoadedMessage { Settings = settings });
     }

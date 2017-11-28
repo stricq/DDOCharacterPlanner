@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -53,6 +54,7 @@
     <Compile Include="Loaders\DataFileLoaderBase.cs" />
     <Compile Include="Loaders\EnhancementFileLoader.cs" />
     <Compile Include="Loaders\FeatFileLoader.cs" />
+    <Compile Include="Loaders\IDataFileLoader.cs" />
     <Compile Include="Loaders\RaceFileLoader.cs" />
     <Compile Include="Loaders\SkillFileLoader.cs" />
     <Compile Include="Loaders\SpellFileLoader.cs" />

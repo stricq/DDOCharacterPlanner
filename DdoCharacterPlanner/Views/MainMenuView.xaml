@@ -10,6 +10,10 @@
   <Menu Height="24" Padding="3,3,0,0" VerticalContentAlignment="Center" BorderThickness="0,0,0,1" BorderBrush="{StaticResource StatusBarBorderColor}" Background="{StaticResource MenuGradient}">
 
     <MenuItem Header="_File" Foreground="White">
+      <MenuItem Header="_Reload Common Data" Command="{Binding Path=ReloadCommonData}" Foreground="{StaticResource BackgroundColor}" />
+
+      <Separator />
+
       <MenuItem Header="_Clear" Command="{Binding Path=Clear}" Foreground="{StaticResource BackgroundColor}" />
 
       <Separator />

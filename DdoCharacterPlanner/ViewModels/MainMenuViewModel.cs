@@ -11,6 +11,8 @@ namespace DdoCharacterPlanner.ViewModels {
 
     #region Private Fields
 
+    private RelayCommandAsync reloadCommonData;
+
     private RelayCommand clear;
 
     private RelayCommandAsync load;
@@ -33,6 +35,11 @@ namespace DdoCharacterPlanner.ViewModels {
     #endregion Private Fields
 
     #region Properties
+
+    public RelayCommandAsync ReloadCommonData {
+      get => reloadCommonData;
+      set { SetField(ref reloadCommonData, value, () => ReloadCommonData); }
+    }
 
     public RelayCommand Clear {
       get => clear;

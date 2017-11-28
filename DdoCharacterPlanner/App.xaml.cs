@@ -33,7 +33,7 @@ namespace DdoCharacterPlanner {
 
       container.Initialize(() => new AggregateCatalog(new DirectoryCatalog(Directory.GetCurrentDirectory(), "DdoCharacterPlanner.exe"),
                                                       new DirectoryCatalog(Directory.GetCurrentDirectory(), "DdoCharacterPlanner.*.dll"),
-                                                      new DirectoryCatalog(Directory.GetCurrentDirectory(), "Str.*.dll")));
+                                                      new DirectoryCatalog(Directory.GetCurrentDirectory(), "STR.*.dll")));
     }
 
     #endregion Constructor

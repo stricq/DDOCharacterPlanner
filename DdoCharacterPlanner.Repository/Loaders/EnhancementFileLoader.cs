@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DdoCharacterPlanner.Domain.Contracts;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using STR.Common.Extensions;
@@ -29,6 +28,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     #region IDataFileLoader Implementation
 
     public Type LoaderType => typeof(Enhancement);
+
+    public string LoaderName => "Enhancements";
 
     public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
       bool isParentSelector = false;

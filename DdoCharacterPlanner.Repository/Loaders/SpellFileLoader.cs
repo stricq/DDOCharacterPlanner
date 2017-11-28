@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using DdoCharacterPlanner.Domain.Contracts;
 using DdoCharacterPlanner.Domain.Enumerations;
 using DdoCharacterPlanner.Domain.Models.CommonData;
 
@@ -31,6 +30,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     #region IDataFileLoader Implementation
 
     public Type LoaderType => typeof(Spell);
+
+    public string LoaderName => "Spells";
 
     public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
       string file = Path.Combine(FilePath, Filename);
