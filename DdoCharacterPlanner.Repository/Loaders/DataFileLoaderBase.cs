@@ -12,24 +12,22 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     #region Protected Methods
 
-    protected static async Task<bool> VerifyAndDownloadAsync(string filePath, string urlPath) {
+    protected static async Task<bool> VerifyAndDownloadAsync(HttpClient client, string filePath, string urlPath) {
       string dirPath = Path.GetDirectoryName(filePath);
 
       if (!await Task.Run(() => Directory.Exists(dirPath))) await Task.Run(() => Directory.CreateDirectory(dirPath));
 
       if (!await Task.Run(() => File.Exists(filePath))) {
-        using(HttpClient client = new HttpClient()) {
-          HttpResponseMessage response = await client.GetAsync(new Uri(urlPath));
+        HttpResponseMessage response = await client.GetAsync(new Uri(urlPath));
 
-          if (!response.IsSuccessStatusCode) {
-            Console.WriteLine($"{urlPath} returned code {response.StatusCode}.");
+        if (!response.IsSuccessStatusCode) {
+          Console.WriteLine($"{urlPath} returned code {response.StatusCode}.");
 
-            return false;
-          }
+          return false;
+        }
 
-          using(StreamWriter writer = new StreamWriter(filePath)) {
-            await response.Content.CopyToAsync(writer.BaseStream);
-          }
+        using(StreamWriter writer = new StreamWriter(filePath)) {
+          await response.Content.CopyToAsync(writer.BaseStream);
         }
       }
 
@@ -56,7 +54,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
           continue;
         }
 
-        if (skip || line.StartsWith("//")) {
+        if (skip || line.StartsWith("//") || line.StartsWith(@"\\")) {
           //
           // Do nothing, just consume lines...
           //

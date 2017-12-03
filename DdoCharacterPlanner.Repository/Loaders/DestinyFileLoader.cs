@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -14,23 +16,23 @@ using STR.Common.Extensions;
 namespace DdoCharacterPlanner.Repository.Loaders {
 
   [Export(typeof(IDataFileLoader))]
-  public class EnhancementFileLoader : DataFileLoaderBase, IDataFileLoader {
+  public class DestinyFileLoader : DataFileLoaderBase, IDataFileLoader {
 
     #region Private Fields
 
-    private const string Filename = "EnhancementFile.txt";
+    private const string Filename = "DestinyFile.txt";
 
-    private const string FileUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/DataFiles/EnhancementFile.txt";
+    private const string FileUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/DataFiles/DestinyFile.txt";
 
-    private const string ImageUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/Graphics/Enhancements";
+    private const string ImageUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/Graphics/Destinies";
 
     #endregion Private Fields
 
     #region IDataFileLoader Implementation
 
-    public Type LoaderType => typeof(Enhancement);
+    public Type LoaderType => typeof(Destiny);
 
-    public string LoaderName => "Enhancements";
+    public string LoaderName => "Destinies";
 
     public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
       HttpClient client = new HttpClient();
@@ -43,9 +45,9 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
       StreamReader stream = new StreamReader(file);
 
-      List<Enhancement> enhancements = await ReadDataFileAsync<Enhancement>(stream, (enhancement, property, value) => {
-        if (enhancement == null) {
-          if (property.Equals("MULTIPLE ENHANCEMENT SELECTORS", StringComparison.InvariantCultureIgnoreCase)) isParentSelector = true;
+      List<Destiny> destinies = await ReadDataFileAsync<Destiny>(stream, (destiny, property, value) => {
+        if (destiny == null) {
+          if (property.Equals("MULTIPLE DESTINY SELECTOR", StringComparison.InvariantCultureIgnoreCase)) isParentSelector = true;
 
           if (property.Equals("ENDOFMULTI", StringComparison.InvariantCultureIgnoreCase)) isParentSelector = false;
 
@@ -54,154 +56,157 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
         switch(property) {
           case "MULTI": {
-            enhancement.ParentSelectorName = value;
+            destiny.ParentSelectorName = value;
 
             break;
           }
           case "MSLOT": {
-            enhancement.SelectorSlot = Int32.Parse(value);
+            destiny.SelectorSlot = Int32.Parse(value);
 
             break;
           }
           case "NAME": {
-            enhancement.Name             = value;
-            enhancement.IsParentSelector = isParentSelector;
+            destiny.Name             = value;
+            destiny.IsParentSelector = isParentSelector;
 
             break;
           }
           case "DESC": {
-            enhancement.Description = value;
+            destiny.Description = value;
 
             break;
           }
           case "TREE": {
-            enhancement.TreeName = value;
+            destiny.TreeName = value;
 
             break;
           }
-          case "LEVEL": {
-            enhancement.TreeRow = Int32.Parse(value);
+          case "TIER": {
+            destiny.TreeRow = Int32.Parse(value);
 
             break;
           }
           case "SLOT": {
-            enhancement.TreeColumn = Int32.Parse(value);
+            destiny.TreeColumn = Int32.Parse(value);
 
             break;
           }
           case "TYPE": {
-            enhancement.IsPassive = value.Equals("Passive", StringComparison.InvariantCultureIgnoreCase);
+            destiny.IsPassive = value.Equals("Passive", StringComparison.InvariantCultureIgnoreCase);
 
             break;
           }
           case "COST": {
-            enhancement.Cost = Int32.Parse(value);
+            destiny.Cost = Int32.Parse(value);
 
             break;
           }
           case "RANKS": {
-            enhancement.TotalSelectorSlots = Int32.Parse(value);
+            destiny.TotalSelectorSlots = Int32.Parse(value);
 
-            for(int i = 0; i < enhancement.TotalSelectorSlots; ++i) enhancement.SelectorRanks.Add(new SelectorRank());
+            for(int i = 0; i < destiny.TotalSelectorSlots; ++i) destiny.SelectorRanks.Add(new SelectorRank());
 
             break;
           }
           case "DESC1": {
-            enhancement.SelectorRanks[0].Description = value;
+            destiny.SelectorRanks[0].Description = value;
 
             break;
           }
           case "REQ1": {
-            enhancement.SelectorRanks[0].NeedsAll = buildNeedsList(value);
+            destiny.SelectorRanks[0].NeedsAll = buildNeedsList(value);
 
             break;
           }
           case "REQONE1": {
-            enhancement.SelectorRanks[0].NeedsOne = buildNeedsList(value);
+            destiny.SelectorRanks[0].NeedsOne = buildNeedsList(value);
 
             break;
           }
           case "LOCK1": {
-            enhancement.SelectorRanks[0].Locks = buildNeedsList(value);
+            destiny.SelectorRanks[0].Locks = buildNeedsList(value);
 
             break;
           }
           case "MOD1":
+          case "MODTYPE1":
           case "MODNAME1":
           case "MODVALUE1": {
-            buildModifyList(property.Replace("1", null), value, enhancement.SelectorRanks[0]);
+            buildModifyList(property.Replace("1", null), value, destiny.SelectorRanks[0]);
 
             break;
           }
           case "DESC2": {
-            enhancement.SelectorRanks[1].Description = value;
+            destiny.SelectorRanks[1].Description = value;
 
             break;
           }
           case "REQ2": {
-            enhancement.SelectorRanks[1].NeedsAll = buildNeedsList(value);
+            destiny.SelectorRanks[1].NeedsAll = buildNeedsList(value);
 
             break;
           }
           case "REQONE2": {
-            enhancement.SelectorRanks[1].NeedsOne = buildNeedsList(value);
+            destiny.SelectorRanks[1].NeedsOne = buildNeedsList(value);
 
             break;
           }
           case "LOCK2": {
-            enhancement.SelectorRanks[1].Locks = buildNeedsList(value);
+            destiny.SelectorRanks[1].Locks = buildNeedsList(value);
 
             break;
           }
           case "MOD2":
+          case "MODTYPE2":
           case "MODNAME2":
           case "MODVALUE2": {
-            buildModifyList(property.Replace("2", null), value, enhancement.SelectorRanks[1]);
+            buildModifyList(property.Replace("2", null), value, destiny.SelectorRanks[1]);
 
             break;
           }
           case "DESC3": {
-            enhancement.SelectorRanks[2].Description = value;
+            destiny.SelectorRanks[2].Description = value;
 
             break;
           }
           case "REQ3": {
-            enhancement.SelectorRanks[2].NeedsAll = buildNeedsList(value);
+            destiny.SelectorRanks[2].NeedsAll = buildNeedsList(value);
 
             break;
           }
           case "REQONE3": {
-            enhancement.SelectorRanks[2].NeedsOne = buildNeedsList(value);
+            destiny.SelectorRanks[2].NeedsOne = buildNeedsList(value);
 
             break;
           }
           case "LOCK3": {
-            enhancement.SelectorRanks[2].Locks = buildNeedsList(value);
+            destiny.SelectorRanks[2].Locks = buildNeedsList(value);
 
             break;
           }
           case "MOD3":
+          case "MODTYPE3":
           case "MODNAME3":
           case "MODVALUE3": {
-            buildModifyList(property.Replace("3", null), value, enhancement.SelectorRanks[2]);
+            buildModifyList(property.Replace("3", null), value, destiny.SelectorRanks[2]);
 
             break;
           }
           case "ICON": {
-            enhancement.Icon = value;
+            destiny.Icon = value;
 
             break;
           }
           default: {
-            Console.WriteLine($"Encountered unexpected property '{property}' while reading {Filename} on {enhancement.Name}");
+            Console.WriteLine($"Encountered unexpected property '{property}' while reading {Filename} on {destiny.Name}");
 
             break;
           }
         }
       }, true);
 
-      await enhancements.Where(enhancement => !String.IsNullOrEmpty(enhancement.Icon)).GroupBy(enhancement => enhancement.Icon).ForEachAsync(grp => {
-        string path = Path.Combine(ImagePath, "Enhancements", grp.First().IconFilename);
+      await destinies.Where(enhancement => !String.IsNullOrEmpty(enhancement.Icon)).GroupBy(enhancement => enhancement.Icon).ForEachAsync(grp => {
+        string path = Path.Combine(ImagePath, "Destinies", grp.First().IconFilename);
 
         string url = $"{ImageUrl}/{grp.First().IconFilename}";
         //
@@ -214,7 +219,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
       client.Dispose();
 
-      return enhancements.Cast<T>().ToList();
+      return destinies.Cast<T>().ToList();
     }
 
     #endregion IDataFileLoader Implementation
@@ -265,6 +270,11 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         switch(property) {
           case "MOD": {
             a.Type = b;
+
+            break;
+          }
+          case "MODTYPE": {
+            a.BonusType = b;
 
             break;
           }

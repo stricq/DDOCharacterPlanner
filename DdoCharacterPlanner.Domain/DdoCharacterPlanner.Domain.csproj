@@ -64,6 +64,7 @@
     <Compile Include="Enumerations\RaceName.cs" />
     <Compile Include="Extensions\ClassExtensions.cs" />
     <Compile Include="Extensions\RaceExtensions.cs" />
+    <Compile Include="Models\CommonData\Destiny.cs" />
     <Compile Include="Models\CommonData\Enhancement.cs" />
     <Compile Include="Models\CommonData\Modify.cs" />
     <Compile Include="Models\CommonData\SelectorRank.cs" />

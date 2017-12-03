@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Loaders\ClassFileLoader.cs" />
     <Compile Include="Loaders\DataFileLoaderBase.cs" />
+    <Compile Include="Loaders\DestinyFileLoader.cs" />
     <Compile Include="Loaders\EnhancementFileLoader.cs" />
     <Compile Include="Loaders\FeatFileLoader.cs" />
     <Compile Include="Loaders\IDataFileLoader.cs" />

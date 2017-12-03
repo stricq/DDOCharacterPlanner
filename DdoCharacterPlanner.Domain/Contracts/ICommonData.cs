@@ -19,6 +19,8 @@ namespace DdoCharacterPlanner.Domain.Contracts {
 
     List<Enhancement> Enhancements { get; }
 
+    List<Destiny> Destinies { get; }
+
   }
 
 }

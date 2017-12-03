@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using DdoCharacterPlanner.Domain.Enumerations;
@@ -21,9 +22,9 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string Filename = "SpellFile.txt";
 
-    private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/SpellFile.txt";
+    private const string FileUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/DataFiles/SpellFile.txt";
 
-    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Spells";
+    private const string ImageUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/Graphics/Spells";
 
     #endregion Private Fields
 
@@ -34,9 +35,11 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     public string LoaderName => "Spells";
 
     public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
+      HttpClient client = new HttpClient();
+
       string file = Path.Combine(FilePath, Filename);
 
-      await VerifyAndDownloadAsync(file, FileUrl);
+      await VerifyAndDownloadAsync(client, file, FileUrl);
 
       StreamReader stream = new StreamReader(file);
 
@@ -132,11 +135,15 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         string path = Path.Combine(ImagePath, "Spells", spell.IconFilename);
 
         string url = $"{ImageUrl}/{spell.IconFilename}";
-
-        return VerifyAndDownloadAsync(path, url).ContinueWith(task => {
+        //
+        // ReSharper disable once AccessToDisposedClosure - everything is awaited
+        //
+        return VerifyAndDownloadAsync(client, path, url).ContinueWith(task => {
           if (task.IsCompleted && !task.Result) spell.Icon = "NoImage";
         });
       });
+
+      client.Dispose();
 
       return spells.Cast<T>().ToList();
     }

@@ -50,6 +50,8 @@ namespace DdoCharacterPlanner.Repository.Services {
         loadDataFileAsync<Feat>(ProgressHandler) .ContinueWith(task => Feats   = task.IsCompleted ? task.Result : new List<Feat>() ),
         loadDataFileAsync<Spell>(ProgressHandler).ContinueWith(task => Spells  = task.IsCompleted ? task.Result : new List<Spell>()),
 
+        loadDataFileAsync<Destiny>(ProgressHandler).ContinueWith(task => Destinies = task.IsCompleted ? task.Result : new List<Destiny>()),
+
         loadDataFileAsync<Enhancement>(ProgressHandler).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
       };
 
@@ -71,6 +73,8 @@ namespace DdoCharacterPlanner.Repository.Services {
     public List<Spell> Spells { get; private set; }
 
     public List<Enhancement> Enhancements { get; private set; }
+
+    public List<Destiny> Destinies { get; private set; }
 
     #endregion ICommonData Implementation
 

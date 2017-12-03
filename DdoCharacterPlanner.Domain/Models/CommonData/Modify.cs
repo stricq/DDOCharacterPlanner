@@ -8,6 +8,8 @@ namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
     public string Type { get; set; }
 
+    public string BonusType { get; set; }
+
     public string Name { get; set; }
 
     public int Value { get; set; }

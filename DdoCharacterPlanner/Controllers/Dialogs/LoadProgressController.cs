@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
@@ -126,7 +127,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
         if (viewModel.Loaders.Any(loader => loader.StatusSpin)) return;
 
-        Task.Run(() => Task.Delay(2000).ContinueWith(t => messenger.SendUi(new CloseDialogMessage()))).FireAndForget();
+        Task.Run(() => Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(t => messenger.SendUi(new CloseDialogMessage()))).FireAndForget();
       });
     }
 

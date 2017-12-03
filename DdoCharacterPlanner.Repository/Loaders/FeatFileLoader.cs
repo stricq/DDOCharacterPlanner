@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using DdoCharacterPlanner.Domain.Enumerations;
@@ -21,9 +22,9 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     private const string Filename = "FeatsFile.txt";
 
-    private const string FileUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/DataFiles/FeatsFile.txt";
+    private const string FileUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/DataFiles/FeatsFile.txt";
 
-    private const string ImageUrl = "https://raw.githubusercontent.com/DDOCharPlanner/DDOCharPlannerV4/master/Graphics/Feats";
+    private const string ImageUrl = "https://raw.githubusercontent.com/stricq/DDOCharPlannerV4/master/Graphics/Feats";
 
     #endregion Private Fields
 
@@ -34,9 +35,11 @@ namespace DdoCharacterPlanner.Repository.Loaders {
     public string LoaderName => "Feats";
 
     public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
+      HttpClient client = new HttpClient();
+
       string file = Path.Combine(FilePath, Filename);
 
-      await VerifyAndDownloadAsync(file, FileUrl);
+      await VerifyAndDownloadAsync(client, file, FileUrl);
 
       StreamReader stream = new StreamReader(file);
 
@@ -107,8 +110,10 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         string path = Path.Combine(ImagePath, "Feats", grp.First().IconFilename);
 
         string url = $"{ImageUrl}/{grp.First().IconFilename}";
-
-        return VerifyAndDownloadAsync(path, url).ContinueWith(task => {
+        //
+        // ReSharper disable once AccessToDisposedClosure - everything is awaited
+        //
+        return VerifyAndDownloadAsync(client, path, url).ContinueWith(task => {
           if (task.IsCompleted && !task.Result) grp.ForEach(feat => feat.Icon = "NoImage");
         });
       });
@@ -116,6 +121,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
       feats.AddRange(feats.Where(f => !String.IsNullOrEmpty(f.ParentName))
                           .GroupBy(f => f.ParentName)
                           .Select(g => new Feat { Name = g.Key, IsParentHeader = true }));
+
+      client.Dispose();
 
       return feats.Cast<T>().ToList();
     }
