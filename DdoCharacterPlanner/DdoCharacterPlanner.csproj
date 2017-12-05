@@ -83,12 +83,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Constants\DialogNames.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\Content\CharacterController.cs" />
     <Compile Include="Controllers\Dialogs\LoadProgressController.cs" />
     <Compile Include="Controllers\StatusBarController.cs" />
     <Compile Include="Messages\Application\LoadProgressMessage.cs" />
     <Compile Include="ViewEntities\Dialogs\LoadProgressViewEntity.cs" />
+    <Compile Include="ViewModels\ContentViewModel.cs" />
+    <Compile Include="ViewModels\Content\CharacterViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\LoadProgressViewModel.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
+    <Compile Include="Views\Content\CharacterView.xaml.cs">
+      <DependentUpon>CharacterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Content\CommonDataView.xaml.cs">
+      <DependentUpon>CommonDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContentView.xaml.cs">
+      <DependentUpon>ContentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Dialogs\LoadProgressView.xaml.cs">
       <DependentUpon>LoadProgressView.xaml</DependentUpon>
     </Compile>
@@ -104,6 +117,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\HeaderedContentStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Content\CharacterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Content\CommonDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ContentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,5 +207,6 @@
       <Name>DdoCharacterPlanner.Repository</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

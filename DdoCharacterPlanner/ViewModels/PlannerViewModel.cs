@@ -10,7 +10,7 @@ using STR.MvvmCommon;
 namespace DdoCharacterPlanner.ViewModels {
 
   [Export]
-  [ViewModel("PlannerViewModel")]
+  [ViewModel(nameof(PlannerViewModel))]
   public class PlannerViewModel : ObservableObject {
 
     #region Private Fields

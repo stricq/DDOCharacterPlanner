@@ -35,6 +35,11 @@
       <MenuItem Header="E_xit" Command="{Binding Path=Exit}" Foreground="{StaticResource BackgroundColor}" />
     </MenuItem>
 
+    <MenuItem Header="_View" Foreground="White">
+      <MenuItem Header="_Character Planner" IsCheckable="True" IsChecked="{Binding Path=IsPlannerVisible}"    Foreground="{StaticResource BackgroundColor}" />
+      <MenuItem Header="Common _Data"       IsCheckable="True" IsChecked="{Binding Path=IsCommonDataVisible}" Foreground="{StaticResource BackgroundColor}" />
+    </MenuItem>
+
     <MenuItem Header="_Builders" Foreground="White">
       <MenuItem Header="_Items..."     Command="{Binding Path=ItemBuilder}"      Foreground="{StaticResource BackgroundColor}" />
       <MenuItem Header="_Equipment..." Command="{Binding Path=EquipmentBuilder}" Foreground="{StaticResource BackgroundColor}" />

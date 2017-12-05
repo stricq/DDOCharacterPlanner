@@ -25,6 +25,9 @@ namespace DdoCharacterPlanner.ViewModels {
 
     private RelayCommand exit;
 
+    private bool isPlannerVisible;
+    private bool isCommonDataVisible;
+
     private RelayCommand itemBuilder;
     private RelayCommand equipmentBuilder;
 
@@ -74,6 +77,16 @@ namespace DdoCharacterPlanner.ViewModels {
     public RelayCommand Exit {
       get => exit;
       set { SetField(ref exit, value, () => Exit); }
+    }
+
+    public bool IsPlannerVisible {
+      get => isPlannerVisible;
+      set { SetField(ref isPlannerVisible, value, () => IsPlannerVisible); }
+    }
+
+    public bool IsCommonDataVisible {
+      get => isCommonDataVisible;
+      set { SetField(ref isCommonDataVisible, value, () => IsCommonDataVisible); }
     }
 
     public RelayCommand ItemBuilder {
