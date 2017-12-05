@@ -106,6 +106,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
+      stream.Close();
+
       await feats.Where(feat => !String.IsNullOrEmpty(feat.Icon)).GroupBy(feat => feat.Icon).ForEachAsync(grp => {
         string path = Path.Combine(ImagePath, "Feats", grp.First().IconFilename);
 

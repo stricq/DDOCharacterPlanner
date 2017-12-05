@@ -10,8 +10,6 @@ using DdoCharacterPlanner.Domain.Models.CommonData;
 
 using DdoCharacterPlanner.Repository.Loaders;
 
-using STR.Common.Extensions;
-
 
 namespace DdoCharacterPlanner.Repository.Services {
 
@@ -55,7 +53,7 @@ namespace DdoCharacterPlanner.Repository.Services {
         loadDataFileAsync<Enhancement>(ProgressHandler).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
       };
 
-      await tasks.ForEachAsync(task => task);
+      await Task.WhenAll(tasks);
     }
 
     #endregion ICommonDataStore Implementation

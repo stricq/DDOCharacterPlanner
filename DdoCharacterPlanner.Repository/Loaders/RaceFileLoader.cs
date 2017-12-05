@@ -73,6 +73,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
+      stream.Close();
+
       await races.ForEachAsync(race => {
         string   malePath = Path.Combine(ImagePath, "Races", race.MaleIconFilename);
         string femalePath = Path.Combine(ImagePath, "Races", race.FemaleIconFilename);

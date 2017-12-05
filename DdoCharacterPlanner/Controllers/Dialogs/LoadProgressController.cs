@@ -62,7 +62,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
     #region IController Implementation
 
-    public int InitializePriority { get; } = 100;
+    public int InitializePriority { get; } = 50;
 
     public async Task InitializeAsync() {
       registerMessages();
@@ -80,12 +80,13 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
     }
 
     private async Task onLoadProgressAsync(LoadProgressMessage message) {
-      await asyncService.RunUiContext(() => viewModel.Loaders = new ObservableCollection<LoadProgressViewEntity>(commonDataStore.GetLoaderFiles().Select(loader => new LoadProgressViewEntity {
-        StatusIcon  = FontAwesomeIcon.Spinner,
-        StatusColor = new SolidColorBrush(Colors.BlueViolet),
-        StatusSpin  = true,
-        Loader      = loader
-      })));
+      //
+      // This method alwyas runs on a background thread.
+      //
+      // Due to requirements of the Bitmap class (used by FontAwesome) the entities must be created on the
+      // UI thread.
+      //
+      await asyncService.RunUiContext(() => viewModel.Loaders = buildEntityList());
 
       messenger.SendUi(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
@@ -101,12 +102,10 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
     }
 
     private async Task onReloadCommonDataExecute() {
-      viewModel.Loaders = new ObservableCollection<LoadProgressViewEntity>(commonDataStore.GetLoaderFiles().OrderBy(loader => loader).Select(loader => new LoadProgressViewEntity {
-        StatusIcon  = FontAwesomeIcon.Spinner,
-        StatusColor = new SolidColorBrush(Colors.BlueViolet),
-        StatusSpin  = true,
-        Loader      = loader
-      }));
+      //
+      // This method always runs on the UI thread.
+      //
+      viewModel.Loaders = buildEntityList();
 
       messenger.Send(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
@@ -116,6 +115,15 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
     #endregion Commands
 
     #region Private Methods
+
+    private ObservableCollection<LoadProgressViewEntity> buildEntityList() {
+      return new ObservableCollection<LoadProgressViewEntity>(commonDataStore.GetLoaderFiles().OrderBy(loader => loader).Select(loader => new LoadProgressViewEntity {
+        StatusIcon  = FontAwesomeIcon.Spinner,
+        StatusColor = new SolidColorBrush(Colors.BlueViolet),
+        StatusSpin  = true,
+        Loader      = loader
+      }));
+    }
 
     private void onProgressCallback(string message) {
       LoadProgressViewEntity entity = viewModel.Loaders.Single(loader => loader.Loader == message);
@@ -128,7 +136,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
         if (viewModel.Loaders.Any(loader => loader.StatusSpin)) return;
 
         Task.Run(() => Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(t => messenger.SendUi(new CloseDialogMessage()))).FireAndForget();
-      });
+      }).FireAndForget();
     }
 
     #endregion Private Methods

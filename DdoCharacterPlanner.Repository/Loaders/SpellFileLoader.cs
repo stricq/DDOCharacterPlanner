@@ -131,6 +131,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
+      stream.Close();
+
       await spells.Where(spell => !String.IsNullOrEmpty(spell.Icon)).ForEachAsync(spell => {
         string path = Path.Combine(ImagePath, "Spells", spell.IconFilename);
 

@@ -205,6 +205,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       }, true);
 
+      stream.Close();
+
       await destinies.Where(enhancement => !String.IsNullOrEmpty(enhancement.Icon)).GroupBy(enhancement => enhancement.Icon).ForEachAsync(grp => {
         string path = Path.Combine(ImagePath, "Destinies", grp.First().IconFilename);
 

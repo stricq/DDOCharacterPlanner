@@ -83,6 +83,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
+      stream.Close();
+
       await skills.ForEachAsync(skill => {
         string path = Path.Combine(ImagePath, "Skills", skill.IconFilename);
 

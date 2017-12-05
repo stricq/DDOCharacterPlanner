@@ -111,6 +111,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         }
       });
 
+      stream.Close();
+
       await classes.ForEachAsync(@class => {
         string path = Path.Combine(ImagePath, "Classes", $"{@class.IconFilename}");
 
