@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DdoCharacterPlanner", "DdoCharacterPlanner\DdoCharacterPlanner.csproj", "{31285A2C-C8A6-45D9-BDE4-8A90F51CF3DA}"
 EndProject
@@ -9,6 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Presentation", "01 Prese
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Items", "00 Solution Items", "{356A04A4-0B8D-4FB2-A5D2-A262812C870F}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		_config.yml = _config.yml
 		DDOCharacterPlanner.sln.DotSettings.user = DDOCharacterPlanner.sln.DotSettings.user
 	EndProjectSection
 EndProject
