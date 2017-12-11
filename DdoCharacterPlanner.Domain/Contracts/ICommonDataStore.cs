@@ -9,7 +9,7 @@ namespace DdoCharacterPlanner.Domain.Contracts {
 
     List<string> GetLoaderFiles();
 
-    Task LoadDataFilesAsync(Action<string> ProgressHandler);
+    Task LoadDataFilesAsync(Func<string, Task> ProgressHandlerAsync);
 
   }
 

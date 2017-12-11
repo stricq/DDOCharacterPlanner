@@ -17,7 +17,6 @@ using FontAwesome.WPF;
 
 using STR.Common.Contracts;
 using STR.Common.Extensions;
-
 using STR.DialogView.Domain.Messages;
 
 using STR.MvvmCommon;
@@ -90,7 +89,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
       messenger.SendUi(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
-      await commonDataStore.LoadDataFilesAsync(onProgressCallback);
+      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync);
     }
 
     #endregion Messages
@@ -109,7 +108,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
       messenger.Send(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
-      await commonDataStore.LoadDataFilesAsync(onProgressCallback);
+      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync);
     }
 
     #endregion Commands
@@ -125,18 +124,22 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
       }));
     }
 
-    private void onProgressCallback(string message) {
+    private async Task onProgressCallbackAsync(string message) {
       LoadProgressViewEntity entity = viewModel.Loaders.Single(loader => loader.Loader == message);
 
-      asyncService.RunUiContext(() => {
+      await asyncService.RunUiContext(() => {
         entity.StatusIcon  = FontAwesomeIcon.Check;
         entity.StatusColor = new SolidColorBrush(Colors.LawnGreen);
         entity.StatusSpin  = false;
+      });
 
-        if (viewModel.Loaders.Any(loader => loader.StatusSpin)) return;
+      if (viewModel.Loaders.Any(loader => loader.StatusSpin)) return;
 
-        Task.Run(() => Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(t => messenger.SendUi(new CloseDialogMessage()))).FireAndForget();
-      }).FireAndForget();
+      await Task.Delay(TimeSpan.FromSeconds(1));
+
+      messenger.SendUi(new CloseDialogMessage());
+
+      messenger.SendAsync(new CommonDataLoadedMessage()).FireAndForget();
     }
 
     #endregion Private Methods

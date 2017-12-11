@@ -66,22 +66,22 @@ namespace DdoCharacterPlanner.Repository.Loaders {
             break;
           }
           case "BAB": {
-            @class.BaseAttackBonus = ToIntArray(value);
+            @class.BaseAttackBonuses = ToIntArray(value);
 
             break;
           }
           case "FORTSAVE": {
-            @class.FortitudeSave = ToIntArray(value);
+            @class.FortitudeSaves = ToIntArray(value);
 
             break;
           }
           case "REFSAVE": {
-            @class.ReflexSave = ToIntArray(value);
+            @class.ReflexSaves = ToIntArray(value);
 
             break;
           }
           case "WILLSAVE": {
-            @class.WillSave = ToIntArray(value);
+            @class.WillSaves = ToIntArray(value);
 
             break;
           }

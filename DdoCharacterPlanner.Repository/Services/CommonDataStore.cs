@@ -40,17 +40,17 @@ namespace DdoCharacterPlanner.Repository.Services {
       return loaders.Select(loader => loader.LoaderName).ToList();
     }
 
-    public async Task LoadDataFilesAsync(Action<string> ProgressHandler) {
+    public async Task LoadDataFilesAsync(Func<string, Task> ProgressHandlerAsync) {
       List<Task> tasks = new List<Task> {
-        loadDataFileAsync<Race>(ProgressHandler) .ContinueWith(task => Races   = task.IsCompleted ? task.Result : new List<Race>() ),
-        loadDataFileAsync<Class>(ProgressHandler).ContinueWith(task => Classes = task.IsCompleted ? task.Result : new List<Class>()),
-        loadDataFileAsync<Skill>(ProgressHandler).ContinueWith(task => Skills  = task.IsCompleted ? task.Result : new List<Skill>()),
-        loadDataFileAsync<Feat>(ProgressHandler) .ContinueWith(task => Feats   = task.IsCompleted ? task.Result : new List<Feat>() ),
-        loadDataFileAsync<Spell>(ProgressHandler).ContinueWith(task => Spells  = task.IsCompleted ? task.Result : new List<Spell>()),
+        loadDataFileAsync<Race>(ProgressHandlerAsync) .ContinueWith(task => Races   = task.IsCompleted ? task.Result : new List<Race>() ),
+        loadDataFileAsync<Class>(ProgressHandlerAsync).ContinueWith(task => Classes = task.IsCompleted ? task.Result : new List<Class>()),
+        loadDataFileAsync<Skill>(ProgressHandlerAsync).ContinueWith(task => Skills  = task.IsCompleted ? task.Result : new List<Skill>()),
+        loadDataFileAsync<Feat>(ProgressHandlerAsync) .ContinueWith(task => Feats   = task.IsCompleted ? task.Result : new List<Feat>() ),
+        loadDataFileAsync<Spell>(ProgressHandlerAsync).ContinueWith(task => Spells  = task.IsCompleted ? task.Result : new List<Spell>()),
 
-        loadDataFileAsync<Destiny>(ProgressHandler).ContinueWith(task => Destinies = task.IsCompleted ? task.Result : new List<Destiny>()),
+        loadDataFileAsync<Destiny>(ProgressHandlerAsync).ContinueWith(task => Destinies = task.IsCompleted ? task.Result : new List<Destiny>()),
 
-        loadDataFileAsync<Enhancement>(ProgressHandler).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
+        loadDataFileAsync<Enhancement>(ProgressHandlerAsync).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
       };
 
       await Task.WhenAll(tasks);
@@ -78,7 +78,7 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     #region Private Methods
 
-    private async Task<List<T>> loadDataFileAsync<T>(Action<string> progressHandler) {
+    private async Task<List<T>> loadDataFileAsync<T>(Func<string, Task> progressHandlerAsync) {
       string  dataFilePath = Path.Combine(rootFilePath, "Data Files");
       string imageFilePath = Path.Combine(rootFilePath, "Images");
 
@@ -86,7 +86,7 @@ namespace DdoCharacterPlanner.Repository.Services {
 
       List<T> items = await loader.LoadFromDataFileAsync<T>(dataFilePath, imageFilePath);
 
-      progressHandler?.Invoke(loader.LoaderName);
+      if (progressHandlerAsync != null) await progressHandlerAsync(loader.LoaderName);
 
       return items;
     }

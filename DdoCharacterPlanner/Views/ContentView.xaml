@@ -8,7 +8,7 @@
              mvvm:ViewModelLocator.ComposedViewModel="ContentViewModel"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
 
-  <Grid>
+  <Grid Margin="6">
 
         <ContentControl Visibility="{Binding Path=IsPlannerVisible, Converter={StaticResource VisibilityConverter}}">
           <v:CharacterView />

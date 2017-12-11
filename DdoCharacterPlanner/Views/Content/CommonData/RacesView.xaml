@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="DdoCharacterPlanner.Views.Content.CommonData.RacesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:v="clr-namespace:DdoCharacterPlanner.Views.Content.CommonData"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ve="clr-namespace:DdoCharacterPlanner.ViewEntities.Content.CommonData"
+             xmlns:ctrl="clr-namespace:DdoCharacterPlanner.Controls"
+             xmlns:mvvm="http://schemas.stricq.com/mvvmcommon/"
+             xmlns:xtck="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mvvm:ViewModelLocator.ComposedViewModel="RacesViewModel"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <ItemsControl Grid.Column="0" ItemsSource="{Binding Path=Races}" Margin="6,6,0,6" Padding="0,6,0,6" BorderThickness="0" Background="{StaticResource BackgroundColor}"
+                  VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="ve:RaceViewEntity">
+          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" Margin="3,0,0,.5" Width="140" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <Border Grid.Column="1" BorderThickness="1,0,0,0" Margin="0,6,6,6" BorderBrush="{StaticResource ContentControlBorderColor}">
+
+      <Grid Margin="6">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Icons:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+          <ctrl:Bitmap Source="{Binding Path=Selected.MaleIconFilename}" />
+          <ctrl:Bitmap Source="{Binding Path=Selected.FemaleIconFilename}" Margin="6,0,0,0" />
+        </StackPanel>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Heroic/Iconic:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Selected.Iconic}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Base Points:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Selected.BaseAbilityPoints}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
+
+        <Label Grid.Row="3" Grid.Column="0" Content="Base Abilities:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+
+        <v:AbilitiesView Grid.Row="3" Grid.Column="1" DataContext="{Binding Path=Selected.BaseAbilities}" />
+
+        <Label Grid.Row="4" Grid.Column="0" Content="Description:" VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+
+        <xtck:RichTextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Selected.Description}" Margin="-4,6,0,0" Foreground="{StaticResource ForegroundColor}" Background="Transparent" BorderThickness="0" IsReadOnly="True" IsReadOnlyCaretVisible="False" />
+
+      </Grid>
+
+    </Border>
+
+  </Grid>
+
+</UserControl>
