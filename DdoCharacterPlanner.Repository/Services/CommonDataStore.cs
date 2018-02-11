@@ -40,17 +40,16 @@ namespace DdoCharacterPlanner.Repository.Services {
       return loaders.Select(loader => loader.LoaderName).ToList();
     }
 
-    public async Task LoadDataFilesAsync(Func<string, Task> ProgressHandlerAsync) {
+    public async Task LoadDataFilesAsync(Func<string, Task> ProgressHandlerAsync, bool DownloadFilesFromWeb) {
       List<Task> tasks = new List<Task> {
-        loadDataFileAsync<Race>(ProgressHandlerAsync) .ContinueWith(task => Races   = task.IsCompleted ? task.Result : new List<Race>() ),
-        loadDataFileAsync<Class>(ProgressHandlerAsync).ContinueWith(task => Classes = task.IsCompleted ? task.Result : new List<Class>()),
-        loadDataFileAsync<Skill>(ProgressHandlerAsync).ContinueWith(task => Skills  = task.IsCompleted ? task.Result : new List<Skill>()),
-        loadDataFileAsync<Feat>(ProgressHandlerAsync) .ContinueWith(task => Feats   = task.IsCompleted ? task.Result : new List<Feat>() ),
-        loadDataFileAsync<Spell>(ProgressHandlerAsync).ContinueWith(task => Spells  = task.IsCompleted ? task.Result : new List<Spell>()),
+        loadDataFileAsync<Race> (ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Races   = task.IsCompleted ? task.Result : new List<Race>() ),
+        loadDataFileAsync<Class>(ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Classes = task.IsCompleted ? task.Result : new List<Class>()),
+        loadDataFileAsync<Skill>(ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Skills  = task.IsCompleted ? task.Result : new List<Skill>()),
+        loadDataFileAsync<Feat> (ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Feats   = task.IsCompleted ? task.Result : new List<Feat>() ),
+        loadDataFileAsync<Spell>(ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Spells  = task.IsCompleted ? task.Result : new List<Spell>()),
 
-        loadDataFileAsync<Destiny>(ProgressHandlerAsync).ContinueWith(task => Destinies = task.IsCompleted ? task.Result : new List<Destiny>()),
-
-        loadDataFileAsync<Enhancement>(ProgressHandlerAsync).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
+        loadDataFileAsync<Destiny>    (ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Destinies    = task.IsCompleted ? task.Result : new List<Destiny>()),
+        loadDataFileAsync<Enhancement>(ProgressHandlerAsync, DownloadFilesFromWeb).ContinueWith(task => Enhancements = task.IsCompleted ? task.Result : new List<Enhancement>())
       };
 
       await Task.WhenAll(tasks);
@@ -78,13 +77,13 @@ namespace DdoCharacterPlanner.Repository.Services {
 
     #region Private Methods
 
-    private async Task<List<T>> loadDataFileAsync<T>(Func<string, Task> progressHandlerAsync) {
+    private async Task<List<T>> loadDataFileAsync<T>(Func<string, Task> progressHandlerAsync, bool downloadFilesFromWeb) {
       string  dataFilePath = Path.Combine(rootFilePath, "Data Files");
       string imageFilePath = Path.Combine(rootFilePath, "Images");
 
       IDataFileLoader loader = loaders.Single(l => l.LoaderType == typeof(T));
 
-      List<T> items = await loader.LoadFromDataFileAsync<T>(dataFilePath, imageFilePath);
+      List<T> items = await loader.LoadFromDataFileAsync<T>(dataFilePath, imageFilePath, downloadFilesFromWeb);
 
       if (progressHandlerAsync != null) await progressHandlerAsync(loader.LoaderName);
 

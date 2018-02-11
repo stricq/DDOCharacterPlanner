@@ -10,7 +10,7 @@
     <ItemsControl Grid.IsSharedSizeScope="True" ItemsSource="{Binding}" BorderThickness="0" Background="Transparent" FontFamily="Consolas"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
       <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="ve:AbilityViewEntity">
+        <DataTemplate DataType="{x:Type ve:AbilityViewEntity}">
           <Grid>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto" SharedSizeGroup="Ability" />

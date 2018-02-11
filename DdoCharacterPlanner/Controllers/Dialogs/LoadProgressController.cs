@@ -80,7 +80,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
     private async Task onLoadProgressAsync(LoadProgressMessage message) {
       //
-      // This method alwyas runs on a background thread.
+      // This method alwyas runs on a background thread.  Executed at program start only.
       //
       // Due to requirements of the Bitmap class (used by FontAwesome) the entities must be created on the
       // UI thread.
@@ -89,7 +89,7 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
       messenger.SendUi(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
-      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync);
+      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync, false);
     }
 
     #endregion Messages
@@ -102,13 +102,15 @@ namespace DdoCharacterPlanner.Controllers.Dialogs {
 
     private async Task onReloadCommonDataExecute() {
       //
-      // This method always runs on the UI thread.
+      // This method always runs on the UI thread.  Executed by user interaction.
       //
+      messenger.Send(new CommonDataLoadingMessage());
+
       viewModel.Loaders = buildEntityList();
 
       messenger.Send(new OpenDialogMessage { Name = DialogNames.LoadProgressDialog });
 
-      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync);
+      await commonDataStore.LoadDataFilesAsync(onProgressCallbackAsync, true);
     }
 
     #endregion Commands

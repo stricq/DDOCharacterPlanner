@@ -35,8 +35,8 @@
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="STR.Common, Version=1.0.6532.1092, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\STR.Common.1.0.17323.1\lib\net45\STR.Common.dll</HintPath>
+    <Reference Include="STR.Common, Version=1.0.6573.25813, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\STR.Common.1.0.17364.1\lib\net45\STR.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

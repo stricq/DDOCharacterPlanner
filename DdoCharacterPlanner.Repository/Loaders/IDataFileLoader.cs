@@ -11,7 +11,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     string LoaderName { get; }
 
-    Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath);
+    Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, bool DownloadFilesFromWeb);
 
   }
 

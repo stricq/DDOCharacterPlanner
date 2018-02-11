@@ -21,7 +21,7 @@
                   VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="ve:RaceViewEntity">
-          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" Margin="3,0,0,.5" Width="140" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
+          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" ClickMode="Press" Margin="3,0,0,.5" Width="140" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
@@ -44,8 +44,8 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Icons:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-          <ctrl:Bitmap Source="{Binding Path=Selected.MaleIconFilename}" />
-          <ctrl:Bitmap Source="{Binding Path=Selected.FemaleIconFilename}" Margin="6,0,0,0" />
+          <ctrl:Bitmap Source="{Binding Path=Selected.MaleIconFilename,   Converter={StaticResource UriToBitmapImageConverter}}" />
+          <ctrl:Bitmap Source="{Binding Path=Selected.FemaleIconFilename, Converter={StaticResource UriToBitmapImageConverter}}" Margin="6,0,0,0" />
         </StackPanel>
 
         <Label Grid.Row="1" Grid.Column="0" Content="Heroic/Iconic:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />

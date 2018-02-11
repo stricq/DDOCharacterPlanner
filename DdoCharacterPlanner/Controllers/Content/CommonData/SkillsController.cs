@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -50,33 +51,39 @@ namespace DdoCharacterPlanner.Controllers.Content.CommonData {
 
     #region IController Implementation
 
+    public int InitializePriority { get; } = 100;
+
     public async Task InitializeAsync() {
       registerMessages();
 
+      buildEntities(() => new List<SkillViewEntity>());
+
       await Task.CompletedTask;
     }
-
-    public int InitializePriority { get; } = 100;
 
     #endregion IController Implementation
 
     #region Messages
 
     private void registerMessages() {
+      messenger.Register<CommonDataLoadingMessage>(this, onCommonDataLoading);
+
       messenger.RegisterAsync<CommonDataLoadedMessage>(this, onCommonDataLoadedAsync);
     }
 
+    private void onCommonDataLoading(CommonDataLoadingMessage message) {
+      buildEntities(() => new List<SkillViewEntity>());
+    }
+
     private async Task onCommonDataLoadedAsync(CommonDataLoadedMessage message) {
-      viewModel.Skills?.ForEach(c => c.PropertyChanged -= onSkillViewEntityPropertyChanged);
-
-      viewModel.Skills = new ObservableCollection<SkillViewEntity>(mapper.Map<List<SkillViewEntity>>(commonData.Skills).OrderBy(c => c.Name));
-
-      viewModel.Skills.ForEach(c => c.PropertyChanged += onSkillViewEntityPropertyChanged);
-
-      viewModel.Skills[0].IsChecked = true;
+      buildEntities(() => mapper.Map<List<SkillViewEntity>>(commonData.Skills).OrderBy(c => c.Name));
 
       await Task.CompletedTask;
     }
+
+    #endregion Messages
+
+    #region Private Methods
 
     private void onSkillViewEntityPropertyChanged(object sender, PropertyChangedEventArgs args) {
       if (!(sender is SkillViewEntity entity)) return;
@@ -94,7 +101,17 @@ namespace DdoCharacterPlanner.Controllers.Content.CommonData {
       }
     }
 
-    #endregion Messages
+    private void buildEntities(Func<IEnumerable<SkillViewEntity>> builder) {
+      viewModel.Skills?.ForEach(r => r.PropertyChanged -= onSkillViewEntityPropertyChanged);
+
+      viewModel.Skills = new ObservableCollection<SkillViewEntity>(builder());
+
+      viewModel.Skills.ForEach(r => r.PropertyChanged += onSkillViewEntityPropertyChanged);
+
+      if (viewModel.Skills.Any()) viewModel.Skills[0].IsChecked = true;
+    }
+
+    #endregion Private Methods
 
   }
 

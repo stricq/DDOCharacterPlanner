@@ -6,7 +6,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="ListBox">
-          <Border Name="Border" Background="Transparent" BorderThickness="0">
+          <Border Name="Border" Background="Transparent" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
             <ScrollViewer Margin="0" Focusable="false" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
               <StackPanel Margin="0" IsItemsHost="True" />
             </ScrollViewer>
@@ -16,7 +16,7 @@
     </Setter>
   </Style>
 
-  <Style x:Key="{x:Type ListBoxItem}" TargetType="{x:Type ListBoxItem}">
+  <Style x:Key="ListBoxTableStyle" TargetType="{x:Type ListBoxItem}">
     <Setter Property="OverridesDefaultStyle" Value="true" />
     <Setter Property="Template">
       <Setter.Value>
@@ -27,6 +27,25 @@
           <ControlTemplate.Triggers>
             <Trigger Property="ListBox.AlternationIndex" Value="1">
               <Setter TargetName="Border" Property="Background" Value="#10ffffff" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+    <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border Name="Border" CornerRadius="3" Margin="0" Padding="4,2" SnapsToDevicePixels="true">
+            <ContentPresenter />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="Border" Property="Background" Value="#FF363EF8" />
+              <Setter Property="Foreground" Value="White"/>
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>

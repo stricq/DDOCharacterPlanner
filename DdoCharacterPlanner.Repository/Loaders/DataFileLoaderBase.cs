@@ -12,12 +12,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     #region Protected Methods
 
-    protected static async Task<bool> VerifyAndDownloadAsync(HttpClient client, string filePath, string urlPath) {
+    protected static async Task<bool> VerifyAndDownloadAsync(HttpClient client, string filePath, string urlPath, bool downloadFilesFromWeb) {
       string dirPath = Path.GetDirectoryName(filePath);
 
       if (!await Task.Run(() => Directory.Exists(dirPath))) await Task.Run(() => Directory.CreateDirectory(dirPath));
 
-      if (!await Task.Run(() => File.Exists(filePath))) {
+      if (downloadFilesFromWeb || !await Task.Run(() => File.Exists(filePath))) {
         HttpResponseMessage response = await client.GetAsync(new Uri(urlPath));
 
         if (!response.IsSuccessStatusCode) {

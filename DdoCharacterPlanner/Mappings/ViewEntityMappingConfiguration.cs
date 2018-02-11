@@ -51,6 +51,11 @@ namespace DdoCharacterPlanner.Mappings {
                                                 .ForMember(dest => dest.Description,  opt => opt.ResolveUsing(src => $"{RichTextFormat.Prefix}{src.Description}{RichTextFormat.Suffix}"))
                                                 .ForMember(dest => dest.IsChecked,    opt => opt.Ignore())
                                                 .ForMember(dest => dest.IconFilename, opt => opt.Ignore());
+
+      config.CreateMap<Feat, FeatViewEntity>().ForMember(dest => dest.Description, opt => opt.ResolveUsing(src => $"{RichTextFormat.Prefix}{src.Description}{RichTextFormat.Suffix}"))
+                                              .ForMember(dest => dest.IsSelected,  opt => opt.Ignore())
+                                              .ForMember(dest => dest.Children,    opt => opt.Ignore())
+                                              .PreserveReferences();
     }
 
     #endregion IAutoMapperConfiguration Implementation
@@ -62,10 +67,10 @@ namespace DdoCharacterPlanner.Mappings {
         int points = abilities[a.Value];
 
         return new AbilityViewEntity {
-          Ability  = a.DisplayName,
-          ShortName    = a.ShortName,
-          Points   = points,
-          Modifier = a.Modifier(points)
+          Ability   = a.DisplayName,
+          ShortName = a.ShortName,
+          Points    = points,
+          Modifier  = a.Modifier(points)
         };
       }));
     }

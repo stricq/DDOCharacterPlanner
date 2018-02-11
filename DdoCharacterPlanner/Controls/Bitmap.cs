@@ -51,12 +51,12 @@ namespace DdoCharacterPlanner.Controls
 
       if (e.OldValue is BitmapSource oldValue && bitmap.sourceDownloaded != null && !oldValue.IsFrozen) {
         oldValue.DownloadCompleted -= bitmap.sourceDownloaded;
-        oldValue.DownloadFailed -= bitmap.sourceFailed;
+        oldValue.DownloadFailed    -= bitmap.sourceFailed;
       }
 
       if (e.NewValue is BitmapSource newValue && !newValue.IsFrozen) {
         newValue.DownloadCompleted += bitmap.sourceDownloaded;
-        newValue.DownloadFailed += bitmap.sourceFailed;
+        newValue.DownloadFailed    += bitmap.sourceFailed;
       }
     }
 

@@ -34,19 +34,19 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     public string LoaderName => "Races";
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, bool DownloadFilesFromWeb) {
       HttpClient client = new HttpClient();
 
       string file = Path.Combine(FilePath, Filename);
 
-      await VerifyAndDownloadAsync(client, file, FileUrl);
+      await VerifyAndDownloadAsync(client, file, FileUrl, DownloadFilesFromWeb);
 
       StreamReader stream = new StreamReader(file);
 
       List<Race> races = await ReadDataFileAsync<Race>(stream, (race, property, value) => {
         switch(property) {
           case "RACENAME": {
-            race.Name = Enumeration.FromDisplayName<RaceName>(value);
+            race.Name = Enumeration.FromDisplayName<RaceName>(value.Replace("p-G", "p G"));
 
             race.BaseAbilityPoints = race.IsIconic ? 32 : 28;
 
@@ -85,8 +85,8 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         // ReSharper disable AccessToDisposedClosure - everything is awaited
         //
         List<Task> tasks = new List<Task> {
-          VerifyAndDownloadAsync(client,  malePath,   maleUrl),
-          VerifyAndDownloadAsync(client, femalePath, femaleUrl),
+          VerifyAndDownloadAsync(client,   malePath,   maleUrl, DownloadFilesFromWeb),
+          VerifyAndDownloadAsync(client, femalePath, femaleUrl, DownloadFilesFromWeb),
         };
 
         return Task.WhenAll(tasks);

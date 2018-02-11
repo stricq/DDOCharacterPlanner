@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -52,39 +53,41 @@ namespace DdoCharacterPlanner.Controllers.Content.CommonData {
 
     #region IController Implementation
 
+    public int InitializePriority { get; } = 100;
+
     public async Task InitializeAsync() {
       registerMessages();
 
-      viewModel.Classes = new ObservableCollection<ClassViewEntity>(Enumeration.GetAll<ClassName>().Select(cn => new ClassViewEntity { Name = cn.DisplayName, IsChecked = cn == ClassName.Fighter }).OrderBy(c => c.Name));
+      buildEntities(() => Enumeration.GetAll<ClassName>().Select(cn => new ClassViewEntity { Name = cn.DisplayName, Alignments = new List<Alignment>() }).OrderBy(c => c.Name));
 
       await Task.CompletedTask;
     }
-
-    public int InitializePriority { get; } = 100;
 
     #endregion IController Implementation
 
     #region Messages
 
     private void registerMessages() {
+      messenger.Register<CommonDataLoadingMessage>(this, onCommonDataLoading);
+
       messenger.RegisterAsync<CommonDataLoadedMessage>(this, onCommonDataLoadedAsync);
     }
 
+    private void onCommonDataLoading(CommonDataLoadingMessage message) {
+      buildEntities(() => Enumeration.GetAll<ClassName>().Select(cn => new ClassViewEntity { Name = cn.DisplayName, Alignments = new List<Alignment>() }).OrderBy(c => c.Name));
+    }
+
     private async Task onCommonDataLoadedAsync(CommonDataLoadedMessage message) {
-      viewModel.Classes?.ForEach(c => c.PropertyChanged -= onRaceViewEntityPropertyChanged);
-
-      viewModel.Classes = new ObservableCollection<ClassViewEntity>(mapper.Map<List<ClassViewEntity>>(commonData.Classes).OrderBy(c => c.Name));
-
-      viewModel.Classes.ForEach(c => {
-        c.PropertyChanged += onRaceViewEntityPropertyChanged;
-
-        c.IsChecked = c.Name == ClassName.Fighter.DisplayName;
-      });
+      buildEntities(() => mapper.Map<List<ClassViewEntity>>(commonData.Classes).OrderBy(c => c.Name));
 
       await Task.CompletedTask;
     }
 
-    private void onRaceViewEntityPropertyChanged(object sender, PropertyChangedEventArgs args) {
+    #endregion Messages
+
+    #region Private Methods
+
+    private void onClassViewEntityPropertyChanged(object sender, PropertyChangedEventArgs args) {
       if (!(sender is ClassViewEntity entity)) return;
 
       switch(args.PropertyName) {
@@ -100,7 +103,19 @@ namespace DdoCharacterPlanner.Controllers.Content.CommonData {
       }
     }
 
-    #endregion Messages
+    private void buildEntities(Func<IEnumerable<ClassViewEntity>> builder) {
+      viewModel.Classes?.ForEach(r => r.PropertyChanged -= onClassViewEntityPropertyChanged);
+
+      viewModel.Classes = new ObservableCollection<ClassViewEntity>(builder());
+
+      viewModel.Classes.ForEach(r => {
+        r.PropertyChanged += onClassViewEntityPropertyChanged;
+
+        r.IsChecked = r.Name == ClassName.Fighter.DisplayName;
+      });
+    }
+
+    #endregion Private Methods
 
   }
 

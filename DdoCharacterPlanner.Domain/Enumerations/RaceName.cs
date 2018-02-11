@@ -48,6 +48,12 @@ namespace DdoCharacterPlanner.Domain.Enumerations {
 
     public virtual string GetRemoteName(string Gender) => $"{Gender}{DisplayName.Replace(" ", null)}On.bmp";
 
+    public static RaceName FromRaceName(string Name) {
+      if (Name == "Deep-Gnome") Name = "Deep Gnome";
+
+      return FromDisplayName<RaceName>(Name);
+    }
+
     #endregion Domain Properties
 
     #region Private Classes

@@ -34,12 +34,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     public string LoaderName => "Feats";
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, bool DownloadFilesFromWeb) {
       HttpClient client = new HttpClient();
 
       string file = Path.Combine(FilePath, Filename);
 
-      await VerifyAndDownloadAsync(client, file, FileUrl);
+      await VerifyAndDownloadAsync(client, file, FileUrl, DownloadFilesFromWeb);
 
       StreamReader stream = new StreamReader(file);
 
@@ -115,12 +115,13 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         //
         // ReSharper disable once AccessToDisposedClosure - everything is awaited
         //
-        return VerifyAndDownloadAsync(client, path, url).ContinueWith(task => {
+        return VerifyAndDownloadAsync(client, path, url, DownloadFilesFromWeb).ContinueWith(task => {
           if (task.IsCompleted && !task.Result) grp.ForEach(feat => feat.Icon = "NoImage");
         });
       });
 
-      feats.AddRange(feats.Where(f => !String.IsNullOrEmpty(f.ParentName))
+      feats.AddRange(feats.Where(f => !String.IsNullOrEmpty(f.ParentName)
+                                   && feats.All(ff => ff.Name != f.ParentName))
                           .GroupBy(f => f.ParentName)
                           .Select(g => new Feat { Name = g.Key, IsParentHeader = true }));
 
@@ -156,7 +157,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
       feat.Requirements = feat.Requirements.Zip(parts, (a, b) => {
         switch(property) {
           case "RACELIST": {
-            a.RaceName = Enumeration.FromDisplayName<RaceName>(b);
+            a.RaceName = RaceName.FromRaceName(b);
 
             break;
           }

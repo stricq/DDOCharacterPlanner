@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DdoCharacterPlanner.Views.Content.CommonData.SkillsView"
+﻿<UserControl x:Class="DdoCharacterPlanner.Views.Content.CommonData.FeatsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,7 @@
              xmlns:ctrl="clr-namespace:DdoCharacterPlanner.Controls"
              xmlns:mvvm="http://schemas.stricq.com/mvvmcommon/"
              xmlns:xtck="http://schemas.xceed.com/wpf/xaml/toolkit"
-             mvvm:ViewModelLocator.ComposedViewModel="SkillsViewModel"
+             mvvm:ViewModelLocator.ComposedViewModel="FeatsViewModel"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300">
 
   <Grid>
@@ -16,16 +16,20 @@
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
 
-    <ItemsControl Grid.Column="0" ItemsSource="{Binding Path=Skills}" Margin="6,6,0,6" Padding="0,6,0,6" BorderThickness="0" Background="{StaticResource BackgroundColor}"
-                  VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate DataType="ve:SkillViewEntity">
-          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" ClickMode="Press" Margin="3,0,0,.5" Width="120" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <TreeView Grid.Column="0" ItemsSource="{Binding Path=Feats}" Margin="6" BorderThickness="1" BorderBrush="{StaticResource ContentControlBorderColor}" Background="Transparent" FontFamily="Tahoma" FontSize="12"
+              VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+      <TreeView.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type ve:FeatViewEntity}" ItemsSource="{Binding Path=Children}">
+          <Grid>
 
-    <Border Grid.Column="1" BorderThickness="1,0,0,0" Margin="0,6,6,6" BorderBrush="{StaticResource ContentControlBorderColor}">
+            <TextBlock Text="{Binding Path=Name}" HorizontalAlignment="Left" Margin="0" Padding="6,0" Foreground="{StaticResource ForegroundColor}" />
+
+          </Grid>
+        </HierarchicalDataTemplate>
+      </TreeView.Resources>
+    </TreeView>
+
+    <Border Grid.Column="1" BorderThickness="0" Margin="0,6,6,6">
 
       <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid Margin="6">
@@ -45,17 +49,17 @@
 
           <ctrl:Bitmap Grid.Row="0" Grid.Column="1" Source="{Binding Path=Selected.IconFilename, Converter={StaticResource UriToBitmapImageConverter}}" Width="32" Height="32" HorizontalAlignment="Left" />
 
-          <Label Grid.Row="1" Grid.Column="0" Content="Key Ability:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+          <Label Grid.Row="1" Grid.Column="0" Content="Icon Name:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Selected.KeyAbility}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
+          <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Selected.Icon}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
 
-          <Label Grid.Row="2" Grid.Column="0" Content="Primary Classes:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+          <Label Grid.Row="2" Grid.Column="0" Content="Tags:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
-          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Selected.PrimaryClassList}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
+          <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Selected.TagsList}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
 
-          <Label Grid.Row="3" Grid.Column="0" Content="Cross Classes:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
+          <Label Grid.Row="3" Grid.Column="0" Content="Locks:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
-          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=Selected.CrossClassList}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
+          <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=Selected.LocksList}" Padding="0,1,0,0" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColor}" />
 
           <Label Grid.Row="4" Grid.Column="0" Content="Description:" VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 

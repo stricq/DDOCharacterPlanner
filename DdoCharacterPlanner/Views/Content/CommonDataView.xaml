@@ -29,6 +29,7 @@
       </TabItem>
 
       <TabItem Header="Feats">
+        <v:FeatsView />
       </TabItem>
 
       <TabItem Header="Spells">

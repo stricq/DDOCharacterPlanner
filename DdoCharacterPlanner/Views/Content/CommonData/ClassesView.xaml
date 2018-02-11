@@ -20,7 +20,7 @@
                   VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="ve:ClassViewEntity">
-          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" Margin="3,0,0,.5" Width="100" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
+          <ToggleButton Content="{Binding Path=Name}" IsChecked="{Binding Path=IsChecked}" ClickMode="Press" Margin="3,0,0,.5" Width="100" HorizontalAlignment="Right" Style="{StaticResource LeftEdgeToggleStyle}" />
         </DataTemplate>
       </ItemsControl.ItemTemplate>
     </ItemsControl>
@@ -45,7 +45,7 @@
 
           <Label Grid.Row="0" Grid.Column="0" Content="Icon:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
-          <ctrl:Bitmap Grid.Row="0" Grid.Column="1" Source="{Binding Path=Selected.IconFilename}" />
+          <ctrl:Bitmap Grid.Row="0" Grid.Column="1" Source="{Binding Path=Selected.IconFilename, Converter={StaticResource UriToBitmapImageConverter}}" Width="32" Height="32" HorizontalAlignment="Left" />
 
           <Label Grid.Row="1" Grid.Column="0" Content="Hit Die:" VerticalAlignment="Center" HorizontalContentAlignment="Right" Foreground="{StaticResource ForegroundColor}" />
 
@@ -75,7 +75,7 @@
             <Grid Grid.Row="0" Background="#20ffffff" HorizontalAlignment="Left">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="Level" />
-                <ColumnDefinition Width="Auto" SharedSizeGroup="BAB" />
+                <ColumnDefinition Width="75"   SharedSizeGroup="BAB" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="Fortitude" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="Reflex" />
                 <ColumnDefinition Width="Auto" SharedSizeGroup="Will" />
@@ -83,19 +83,14 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Column="0" Text="Level"          Margin="6" FontWeight="Bold" Foreground="Aqua" />
-              <TextBlock Grid.Column="1" Text="BAB"            Margin="6" FontWeight="Bold" Foreground="Aqua" />
+              <TextBlock Grid.Column="1" Text="BAB"            Margin="6" FontWeight="Bold" Foreground="Aqua" HorizontalAlignment="Right" />
               <TextBlock Grid.Column="2" Text="Fortitude Save" Margin="6" FontWeight="Bold" Foreground="Aqua" />
               <TextBlock Grid.Column="3" Text="Reflex Save"    Margin="6" FontWeight="Bold" Foreground="Aqua" />
               <TextBlock Grid.Column="4" Text="Will Save"      Margin="6" FontWeight="Bold" Foreground="Aqua" />
               <TextBlock Grid.Column="5" Text="Spell Points"   Margin="6" FontWeight="Bold" Foreground="Aqua" />
             </Grid>
 
-            <ListBox Grid.Row="1" ItemsSource="{Binding Path=Selected.LevelStats}" AlternationCount="2" HorizontalAlignment="Left" BorderThickness="0" Background="Transparent">
-              <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <StackPanel Margin="0" IsItemsHost="True" />
-                </ItemsPanelTemplate>
-              </ListBox.ItemsPanel>
+            <ListBox Grid.Row="1" ItemsSource="{Binding Path=Selected.LevelStats}" AlternationCount="2" HorizontalAlignment="Left" BorderThickness="0" ItemContainerStyle="{StaticResource ListBoxTableStyle}">
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="ve:ClassLevelStatsViewEntity">
                   <Grid>

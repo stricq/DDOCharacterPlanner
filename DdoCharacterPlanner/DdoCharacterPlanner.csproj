@@ -44,8 +44,9 @@
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="STR.Common, Version=1.0.6532.1092, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\STR.Common.1.0.17323.1\lib\net45\STR.Common.dll</HintPath>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="STR.Common, Version=1.0.6573.25813, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\STR.Common.1.0.17364.1\lib\net45\STR.Common.dll</HintPath>
     </Reference>
     <Reference Include="STR.DialogView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\STR.DialogView.1.0.17046.1\lib\net45\STR.DialogView.dll</HintPath>
@@ -106,16 +107,20 @@
     <Compile Include="Controllers\Content\CharacterController.cs" />
     <Compile Include="Controllers\Content\CommonDataController.cs" />
     <Compile Include="Controllers\Content\CommonData\ClassesController.cs" />
+    <Compile Include="Controllers\Content\CommonData\FeatsController.cs" />
     <Compile Include="Controllers\Content\CommonData\RacesController.cs" />
     <Compile Include="Controllers\Content\CommonData\SkillsController.cs" />
     <Compile Include="Controllers\Dialogs\LoadProgressController.cs" />
     <Compile Include="Controllers\StatusBarController.cs" />
     <Compile Include="Controls\Bitmap.cs" />
+    <Compile Include="Converters\UriToBitmapImageConverter.cs" />
     <Compile Include="Messages\Application\CommonDataLoadedMessage.cs" />
+    <Compile Include="Messages\Application\CommonDataLoadingMessage.cs" />
     <Compile Include="Messages\Application\LoadProgressMessage.cs" />
     <Compile Include="ViewEntities\Content\CommonData\AbilityViewEntity.cs" />
     <Compile Include="ViewEntities\Content\CommonData\ClassLevelStatsViewEntity.cs" />
     <Compile Include="ViewEntities\Content\CommonData\ClassViewEntity.cs" />
+    <Compile Include="ViewEntities\Content\CommonData\FeatViewEntity.cs" />
     <Compile Include="ViewEntities\Content\CommonData\RaceViewEntity.cs" />
     <Compile Include="ViewEntities\Content\CommonData\SkillViewEntity.cs" />
     <Compile Include="ViewEntities\Dialogs\LoadProgressViewEntity.cs" />
@@ -123,6 +128,7 @@
     <Compile Include="ViewModels\Content\CharacterViewModel.cs" />
     <Compile Include="ViewModels\Content\CommonDataViewModel.cs" />
     <Compile Include="ViewModels\Content\CommonData\ClassesViewModel.cs" />
+    <Compile Include="ViewModels\Content\CommonData\FeatsViewModel.cs" />
     <Compile Include="ViewModels\Content\CommonData\RacesViewModel.cs" />
     <Compile Include="ViewModels\Content\CommonData\SkillsViewModel.cs" />
     <Compile Include="ViewModels\Dialogs\LoadProgressViewModel.cs" />
@@ -141,6 +147,9 @@
     </Compile>
     <Compile Include="Views\Content\CommonData\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Content\CommonData\FeatsView.xaml.cs">
+      <DependentUpon>FeatsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Content\CommonData\RacesView.xaml.cs">
       <DependentUpon>RacesView.xaml</DependentUpon>
@@ -178,7 +187,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\ScrollViewerStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\TabItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\TreeListItemStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Content\CommonData\ClassesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Content\CommonData\FeatsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

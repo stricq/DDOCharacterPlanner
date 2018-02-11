@@ -3,7 +3,7 @@
 
 namespace DdoCharacterPlanner.Domain.Models.CommonData {
 
-  public class FeatRequirement {
+  public sealed class FeatRequirement {
 
     #region Properties
 

@@ -34,12 +34,12 @@ namespace DdoCharacterPlanner.Repository.Loaders {
 
     public string LoaderName => "Skills";
 
-    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath) {
+    public async Task<List<T>> LoadFromDataFileAsync<T>(string FilePath, string ImagePath, bool DownloadFilesFromWeb) {
       HttpClient client = new HttpClient();
 
       string file = Path.Combine(FilePath, Filename);
 
-      await VerifyAndDownloadAsync(client, file, FileUrl);
+      await VerifyAndDownloadAsync(client, file, FileUrl, DownloadFilesFromWeb);
 
       StreamReader stream = new StreamReader(file);
 
@@ -92,7 +92,7 @@ namespace DdoCharacterPlanner.Repository.Loaders {
         //
         // ReSharper disable once AccessToDisposedClosure - everything is awaited
         //
-        return VerifyAndDownloadAsync(client, path, url);
+        return VerifyAndDownloadAsync(client, path, url, DownloadFilesFromWeb);
       });
 
       client.Dispose();
